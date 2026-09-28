@@ -1,85 +1,132 @@
 <!DOCTYPE html>
-<html lang="en"><head><meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Young Genius Education</title>
-<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@600;800&family=Nunito+Sans:wght@400;600&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <style>
-:root{box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);
---bg:#faf8f3;--card:#fff;--ink:#14213d;--mute:#5b6478;--gold:#f2a900;--green:#1f7a4d;--red:#b3261e;--line:#e3ddcf;--hero:#14213d;--herotx:#fff}
-html{scroll-padding-top:env(safe-area-inset-top,0px)}
-@media(prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0f1524;--card:#18203a;--ink:#f1efe8;--mute:#a3abc0;--line:#2a3352;--hero:#0a0f1c;--green:#4cc38a;--red:#ff8a80}}
-:root[data-theme="dark"]{--bg:#0f1524;--card:#18203a;--ink:#f1efe8;--mute:#a3abc0;--line:#2a3352;--hero:#0a0f1c;--green:#4cc38a;--red:#ff8a80}
-*{box-sizing:border-box}
-body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.55 'Nunito Sans',system-ui,sans-serif}
-h1,h2,h3{font-family:'Bricolage Grotesque',system-ui,sans-serif;line-height:1.1;margin:0}
-header{background:var(--hero);color:var(--herotx);position:sticky;top:env(safe-area-inset-top,0px);z-index:5}
-.bar{max-width:980px;margin:auto;padding:12px 16px;display:flex;align-items:center;gap:12px}
-.logo{width:38px;height:38px;border-radius:50%;background:var(--gold);color:#14213d;display:grid;place-items:center;font:800 18px 'Bricolage Grotesque',sans-serif;flex:none}
-.brand{font:800 17px 'Bricolage Grotesque',sans-serif}
-nav{max-width:980px;margin:auto;display:flex;gap:4px;overflow-x:auto;padding:0 12px 10px}
-nav button{background:none;border:0;color:#cfd5e6;font:600 14px 'Nunito Sans',sans-serif;padding:8px 12px;border-radius:20px;white-space:nowrap;cursor:pointer}
-nav button.on{background:var(--gold);color:#14213d}
-nav button:focus-visible,.btn:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible{outline:3px solid var(--gold);outline-offset:2px}
-main{max-width:980px;margin:auto;padding:20px 16px 48px}
-.hero{background:var(--hero);color:var(--herotx);border-radius:18px;padding:28px 22px;display:grid;gap:22px}
-.hero h1{font-size:clamp(30px,7vw,52px);font-weight:800}
-.hero p{color:#cfd5e6;margin:10px 0 0;max-width:46ch}
-.reg{background:var(--gold);color:#14213d;border-radius:14px;padding:18px}
-.reg small{font-weight:600}.fee{font:800 40px 'Bricolage Grotesque',sans-serif}
-.btn{display:inline-block;background:var(--ink);color:var(--bg);border:0;border-radius:10px;padding:11px 18px;font:600 15px 'Nunito Sans',sans-serif;cursor:pointer;margin-top:10px}
-.btn.alt{background:var(--gold);color:#14213d}
-.reg .btn{background:#14213d;color:#fff}
-@media(min-width:760px){.hero{grid-template-columns:1.4fr 1fr;align-items:center;padding:36px}}
-h2{font-size:26px;margin:32px 0 12px}
-.note{background:var(--card);border:1px solid var(--line);border-left:5px solid var(--gold);border-radius:10px;padding:14px 16px;margin-top:16px}
-.grid{display:grid;gap:12px;grid-template-columns:repeat(auto-fill,minmax(250px,1fr))}
-.card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px}
-.card h3{font-size:19px;margin-bottom:6px}
-.mute{color:var(--mute);font-size:14px}
-.pill{display:inline-block;border-radius:20px;padding:2px 10px;font-size:13px;font-weight:600;border:1px solid currentColor}
-.open{color:var(--green)}.closed{color:var(--red)}
-.rank{width:44px;height:44px;border-radius:50%;background:var(--gold);color:#14213d;display:grid;place-items:center;font:800 18px 'Bricolage Grotesque',sans-serif;margin-bottom:8px}
-.row{display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;align-items:center}
-label{display:block;font-weight:600;margin:12px 0 4px;font-size:14px}
-input,select,textarea{width:100%;padding:10px;border-radius:8px;border:1px solid var(--line);background:var(--card);color:var(--ink);font:inherit}
-.ok{color:var(--green);font-weight:600;margin-top:10px;min-height:1.4em}
-dialog{border:0;border-radius:14px;padding:20px;max-width:420px;width:calc(100% - 32px);background:var(--card);color:var(--ink)}
-dialog::backdrop{background:rgba(0,0,0,.5)}
-[hidden]{display:none!important}
-</style></head><body>
-<header><div class="bar"><div class="logo">YG</div><div><div class="brand">Young Genius Education</div><div style="font-size:12px;color:#cfd5e6">Testing &bull; Talent &bull; Achievement &bull; Excellence</div></div></div>
-<nav id="nav"></nav></header>
-<main id="main"></main>
-<dialog id="dlg"><h3>Register for test</h3><p class="mute" id="dt"></p>
-<label for="f1">Student name</label><input id="f1"><label for="f2">School</label><input id="f2">
-<label for="f4">Country</label><input id="f4" value="Pakistan"><label for="f3">Parent phone / WhatsApp</label><input id="f3" inputmode="tel">
-<div class="row"><button class="btn alt" id="sub">Submit registration</button><button class="btn" id="cls">Cancel</button></div><div class="ok" id="dmsg"></div></dialog>
+*{margin:0;padding:0;box-sizing:border-box;font-family:sans-serif}
+body{background:#f6f5ef}
+header{background:#101f3c;color:#fff;padding:12px 15px;position:sticky;top:0;z-index:100}
+.top{display:flex;align-items:center;gap:10px}
+.logo{background:#facc15;color:#101f3c;width:44px;height:44px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:900;font-size:20px}
+.top h2{font-size:17px;line-height:1.1}
+.top p{font-size:11px;opacity:.8;letter-spacing:.5px}
+nav{display:flex;gap:8px;margin-top:12px;overflow-x:auto;white-space:nowrap;padding-bottom:2px}
+nav button{background:transparent;border:0;color:#cbd5e1;padding:8px 14px;border-radius:20px;cursor:pointer;font-size:14px}
+nav button.active{background:#facc15;color:#101f3c;font-weight:bold}
+.page{display:none;padding:18px}
+.page.active{display:block}
+.card{background:#fff;border-radius:14px;padding:16px;box-shadow:0 1px 4px rgba(0,0,0,.07);margin-bottom:12px}
+.badge{background:#facc15;padding:4px 10px;border-radius:20px;font-size:12px;font-weight:bold}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+@media(min-width:600px){.grid{grid-template-columns:repeat(3,1fr)}}
+.winner-img{width:100%;height:160px;object-fit:cover;border-radius:10px}
+</style>
+</head>
+<body>
+<header>
+<div class="top">
+<div class="logo">YG</div>
+<div>
+<h2>Young Genius Education</h2>
+<p>Testing • Talent • Achievement • Excellence</p>
+</div>
+</div>
+<nav>
+<button class="active" onclick="showPage('home',this)">Home</button>
+<button onclick="showPage('tests',this)">Tests</button>
+<button onclick="showPage('topschools',this)">Top Schools</button>
+<button onclick="showPage('topstudents',this)">Top Students</button>
+<button onclick="showPage('news',this)">News</button>
+</nav>
+</header>
+
+<!-- HOME -->
+<div id="home" class="page active">
+<div class="card">
+<h2>Welcome to Young Genius Education 🏆</h2>
+<p style="margin-top:8px;color:#444;line-height:1.5">We test talent, celebrate achievement and build excellence. Check latest results and news.</p>
+</div>
+<div id="home-announce" class="card" style="display:none"></div>
+<div class="card">
+<h3>Quick Links</h3>
+<div style="margin-top:10px;display:flex;gap:10px;flex-wrap:wrap">
+<span class="badge" onclick="showPage('tests',document.querySelectorAll('nav button')[1])">📝 Tests</span>
+<span class="badge" onclick="showPage('topstudents',document.querySelectorAll('nav button')[3])">🏆 Toppers</span>
+<span class="badge" onclick="showPage('news',document.querySelectorAll('nav button')[4])">📢 News</span>
+</div>
+</div>
+</div>
+
+<!-- TESTS -->
+<div id="tests" class="page">
+<h2 style="color:#101f3c;margin-bottom:12px">Upcoming Tests</h2>
+<div class="card"><h3>Mathematics Genius Test</h3><p style="color:#555;margin-top:6px">Registration open for Class 5-10. Test Date: Coming Soon</p></div>
+<div class="card"><h3>Science Talent Search</h3><p style="color:#555;margin-top:6px">For young scientists. Details will be in News tab.</p></div>
+<div class="card"><h3>English Excellence</h3><p style="color:#555;margin-top:6px">Essay & Speaking competition.</p></div>
+</div>
+
+<!-- TOP SCHOOLS -->
+<div id="topschools" class="page">
+<h2 style="color:#101f3c;margin-bottom:12px">Top Schools</h2>
+<div id="school-list"><p>Loading...</p></div>
+</div>
+
+<!-- TOP STUDENTS -->
+<div id="topstudents" class="page">
+<h2 style="color:#101f3c;margin-bottom:12px">Top Students</h2>
+<div id="student-list" class="grid"><p>Loading...</p></div>
+</div>
+
+<!-- NEWS -->
+<div id="news" class="page">
+<h2 style="color:#101f3c;margin-bottom:12px">News and messages</h2>
+<div id="news-list"><p>Loading...</p></div>
+</div>
+
 <script>
-var S={fee:500,deadline:"2026-11-15",status:"Open",ann:"Registration for the 2026-2027 Young Genius assessment tests is now open. Register before the deadline.",
-tests:[["Class 1-2 Olympiad","Math, English","1-2"],["Class 3-4 Olympiad","Math, English, Science","3-4"],["Class 5-6 Olympiad","Math, English, Science","5-6"],["Class 7-8 Olympiad","Math, English, Science","7-8"],["Class 9-10 Olympiad","Math, English, Science","9-10"],["Class 11-12 Olympiad","Math, English, Science","11-12"]],
-testDate:"2026-12-06",
-schools:[["ABC School","Highest overall performance","Add school photos and a short video here."],["Sample Public School","Best participation","Placeholder school. Replace from the admin panel."],["Example Grammar School","Most top-10 positions","Placeholder school. Replace from the admin panel."]],
-students:[["Student Name","1st","ABC School","Class 3-4","96%"],["Student Name","2nd","Sample Public School","Class 5-6","94%"],["Student Name","3rd","Example Grammar School","Class 1-2","93%"]],
-news:[["Registration open","Registration for the upcoming assessment test is now open."],["Result ceremony","Prize distribution details will be published here."]]};
-var tabs=["Home","Tests","Top Schools","Top Students","News"],cur=0,$=function(i){return document.getElementById(i)};
-function e(s){return String(s).replace(/[&<>"]/g,function(c){return{"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]})}
-function d(x){return new Date(x+"T00:00:00").toLocaleDateString("en-GB",{day:"numeric",month:"long",year:"numeric"})}
-function st(){return '<span class="pill '+(S.status=="Open"?"open":"closed")+'">'+S.status+'</span>'}
-function regBox(){return '<div class="reg"><small>Registration '+S.status.toLowerCase()+'</small><div class="fee">Rs. '+S.fee+'</div><small>per student &bull; closes '+d(S.deadline)+'</small><br>'+(S.status=="Open"?'<button class="btn" data-reg="All classes">Register now</button>':'<span class="mute" style="color:#14213d">Registration is closed</span>')+'</div>'}
-function achievers(){return S.students.map(function(s,i){return '<div class="card"><div class="rank">'+(i+1)+'</div><h3>'+e(s[0])+'</h3><div class="mute">'+e(s[2])+' &bull; '+e(s[3])+'</div><div><b>'+e(s[1])+' position</b> &bull; '+e(s[4])+'</div></div>'}).join("")}
-var V=[
-function(){return '<div class="hero"><div><h1>Where young talent gets noticed.</h1><p>Class-wise Math, English and Science tests for students in Pakistan and around the world. Top schools and students are recognised every year.</p></div>'+regBox()+'</div><div class="note"><b>Latest announcement</b><br>'+e(S.ann)+'</div><h2>Featured achievers</h2><div class="grid">'+achievers()+'</div><h2>Latest posters and videos</h2><div class="grid"><div class="card mute">Poster placeholder. Upload from the admin panel.</div><div class="card mute">Video placeholder. Upload from the admin panel.</div></div>'},
-function(){return '<h2>Tests and registration</h2><p class="note">Open to students in Pakistan and international students living abroad.</p><p class="mute">Test date: '+d(S.testDate)+' &bull; Deadline: '+d(S.deadline)+'</p><div class="grid">'+S.tests.map(function(t){return '<div class="card"><h3>'+t[0]+'</h3><div class="mute">Subjects: '+t[1]+'</div><div class="row" style="margin-top:8px"><b>Rs. '+S.fee+'</b>'+st()+'</div>'+(S.status=="Open"?'<button class="btn alt" data-reg="'+t[0]+'">Register</button>':'')+'</div>'}).join("")+'</div>'},
-function(){return '<h2>Top schools, 2026</h2><div class="grid">'+S.schools.map(function(s,i){return '<div class="card"><div class="rank">'+(i+1)+'</div><h3>'+e(s[0])+'</h3><b>'+e(s[1])+'</b><p class="mute">'+e(s[2])+'</p></div>'}).join("")+'</div>'},
-function(){return '<h2>Top students, 2026</h2><div class="grid">'+achievers()+'</div>'},
-function(){return '<h2>News and messages</h2><div class="grid">'+S.news.map(function(n){return '<div class="card"><h3>'+e(n[0])+'</h3><p>'+e(n[1])+'</p></div>'}).join("")+'</div>'},
-function(){return '<h2>Admin panel (demo)</h2><p class="mute">Change a value and save. The Home and Tests pages update straight away. In the real site this needs a login, and changes are stored permanently.</p><div class="card"><label for="a1">Registration fee (Rs.)</label><input id="a1" type="number" value="'+S.fee+'"><label for="a2">Registration deadline</label><input id="a2" type="date" value="'+S.deadline+'"><label for="a3">Test date</label><input id="a3" type="date" value="'+S.testDate+'"><label for="a4">Registration status</label><select id="a4"><option'+(S.status=="Open"?" selected":"")+'>Open</option><option'+(S.status=="Closed"?" selected":"")+'>Closed</option></select><label for="a5">Announcement</label><textarea id="a5" rows="3">'+e(S.ann)+'</textarea><button class="btn alt" id="save">Save changes</button><div class="ok" id="amsg"></div></div>'}];
-function draw(){$("nav").innerHTML=tabs.map(function(t,i){return '<button class="'+(i==cur?"on":"")+'" data-t="'+i+'">'+t+'</button>'}).join("");$("main").innerHTML=V[cur]()}
-document.addEventListener("click",function(x){var t=x.target;
-if(t.dataset.t){cur=+t.dataset.t;draw();window.scrollTo(0,0)}
-if(t.dataset.reg){$("dt").textContent=t.dataset.reg+" - Rs. "+S.fee;$("dmsg").textContent="";$("dlg").showModal()}
-if(t.id=="cls")$("dlg").close();
-if(t.id=="sub"){if(!$("f1").value){$("dmsg").textContent="Enter the student name.";return}$("dmsg").textContent="Registration received (demo). Nothing is stored yet."}
-if(t.id=="save"){S.fee=+$("a1").value||S.fee;S.deadline=$("a2").value||S.deadline;S.testDate=$("a3").value||S.testDate;S.status=$("a4").value;S.ann=$("a5").value;draw();$("amsg").textContent="Saved. Check the Home and Tests pages."}});
-draw();
-</script></body></html>
+const SUPA_URL="https://qesradorkbhgmprpaqve.supabase.co";
+const SUPA_KEY="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFlc3JhZG9ya2JoZ21wcnBhcXZlIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTA2MTI4ODYsImV4cCI6MjEwNjE4ODg4Nn0.Kw9Ls9KR4KxLfJJ_--vCI141yj_Am_drigyCbl4xAao";
+const client=supabase.createClient(SUPA_URL,SUPA_KEY);
+
+function showPage(id,btn){
+ document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+ document.getElementById(id).classList.add('active');
+ document.querySelectorAll('nav button').forEach(b=>b.classList.remove('active'));
+ btn.classList.add('active');
+ window.scrollTo(0,0);
+ if(id=='news') loadNews();
+ if(id=='topstudents') loadStudents();
+ if(id=='topschools') loadSchools();
+}
+
+async function loadNews(){
+ let {data} = await client.from('announcements').select('*').order('id',{ascending:false});
+ let box=document.getElementById('news-list');
+ let homeBox=document.getElementById('home-announce');
+ if(!data || data.length==0){box.innerHTML='<div class="card">No news yet</div>'; return}
+ box.innerHTML=data.map(n=>`<div class="card"><h3 style="color:#101f3c">${n.message.split(' ').slice(0,5).join(' ')}</h3><p style="margin-top:8px;color:#333;line-height:1.5">${n.message}</p><small style="color:#888">${new Date(n.created_at).toLocaleString()}</small></div>`).join('');
+ if(data[0]){homeBox.style.display='block'; homeBox.innerHTML=`<b>📢 Latest:</b> ${data[0].message}`}
+}
+
+async function loadStudents(){
+ let {data} = await client.from('winners').select('*').order('id',{ascending:false});
+ let box=document.getElementById('student-list');
+ if(!data || data.length==0){box.innerHTML='<div class="card">No toppers yet</div>'; return}
+ box.innerHTML=data.map(w=>`<div class="card" style="padding:10px">
+  <img class="winner-img" src="${w.image_url||'https://via.placeholder.com/300'}" onerror="this.src='https://via.placeholder.com/300'">
+  <h4 style="margin:8px 0 2px">${w.student_name}</h4>
+  <small style="color:#555">${w.school_name||''} - ${w.class_name||''}</small><br>
+  <span class="badge" style="margin-top:6px;display:inline-block">${w.prize||'Winner'}</span>
+  ${w.video_url?`<a href="${w.video_url}" target="_blank" style="display:block;margin-top:8px;background:#101f3c;color:#fff;text-align:center;padding:6px;border-radius:8px;text-decoration:none">▶ Video</a>`:''}
+ </div>`).join('');
+}
+
+async function loadSchools(){
+ let {data} = await client.from('winners').select('school_name');
+ let box=document.getElementById('school-list');
+ if(!data || data.length==0){box.innerHTML='<div class="card">No data yet</div>'; return}
+ let count={}; data.forEach(d=>{if(!d.school_name)return; count[d.school_name]=(count[d.school_name]||0)+1});
+ let sorted=Object.entries(count).sort((a,b)=>b[1]-
