@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>YGE Admin</title>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<style>
+body{font-family:sans-serif;padding:12px;background:#f5f7fb}
+.card{background:#fff;padding:12px;border-radius:10px;margin-bottom:12px}
+input,textarea{width:100%;padding:8px;margin:5px 0;border:1px solid #ccc;border-radius:6px}
+button{padding:10px;background:#facc15;border:0;border-radius:6px;font-weight:bold}
+</style>
+</head>
+<body>
+<h2>YGE Admin Panel</h2>
+<div class="card">
+<h3>📢 Announcement</h3>
+<textarea id="a" placeholder="Naya elaan likho"></textarea>
+<button onclick="addA()">Publish</button>
+<div id="al" style="margin-top:10px"></div>
+</div>
+<div class="card">
+<h3>🏆 Add Winner</h3>
+<input id="sn" placeholder="Student Name">
+<input id="sc" placeholder="School Name">
+<input id="cl" placeholder="Class">
+<input id="pr" placeholder="Prize">
+<input id="img" placeholder="Image URL https://">
+<input id="vid" placeholder="Youtube URL">
+<textarea id="ds" placeholder="Description"></textarea>
+<button onclick="addW()">Add Winner</button>
+<div id="wl" style="margin-top:10px"></div>
+</div>
+<script>
+const SUPA_URL="https://qesradorkbhgmprpaqve.supabase.co";
+const SUPA_KEY="PASTE_YOUR_ANON_KEY_HERE";
+const client=supabase.createClient(SUPA_URL,SUPA_KEY);
+async function addA(){
+let m=document.getElementById('a').value;
+if(!m)return alert('likho');
+let {error}=await client.from('announcements').insert({message:m});
+if(error)alert(error.message);else{alert('Done');loadA();}
+}
+async function loadA(){
+let {data}=await client.from('announcements').select('*').order('id',{ascending:false});
+document.getElementById('al').innerHTML=(data||[]).map(x=>'<div style="padding:6px;border-bottom:1px solid #eee">'+x.message+'</div>').join('');
+}
+async function addW(){
+let p={
+student_name:document.getElementById('sn').value,
+school_name:document.getElementById('sc').value,
+class_name:document.getElementById('cl').value,
+prize:document.getElementById('pr').value,
+image_url:document.getElementById('img').value,
+video_url:document.getElementById('vid').value,
+description:document.getElementById('ds').value
+};
+if(!p.student_name)return alert('Name likho');
+let {error}=await client.from('winners').insert(p);
+if(error)alert(error.message);else{alert('Winner Added');loadW();}
+}
+async function loadW(){
+let {data}=await client.from('winners').select('*').order('id',{ascending:false});
+document.getElementById('wl').innerHTML=(data||[]).map(w=>'<div style="padding:6px;border-bottom:1px solid #eee"><b>'+w.student_name+'</b> - '+w.school_name+'</div>').join('');
+}
+loadA();loadW();
+</script>
+</body>
+</html>
