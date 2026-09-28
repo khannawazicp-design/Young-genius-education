@@ -7,13 +7,13 @@
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <style>
 body{font-family:sans-serif;padding:12px;background:#f5f7fb}
-.card{background:#fff;padding:12px;border-radius:10px;margin-bottom:12px}
-input,textarea{width:100%;padding:8px;margin:5px 0;border:1px solid #ccc;border-radius:6px}
-button{padding:10px;background:#facc15;border:0;border-radius:6px;font-weight:bold}
+.card{background:#fff;padding:12px;border-radius:10px;margin-bottom:12px;box-shadow:0 2px 5px rgba(0,0,0,.05)}
+input,textarea{width:100%;padding:10px;margin:6px 0;border:1px solid #ccc;border-radius:6px;box-sizing:border-box}
+button{padding:10px 15px;background:#facc15;border:0;border-radius:6px;font-weight:bold;cursor:pointer}
 </style>
 </head>
 <body>
-<h2>YGE Admin Panel</h2>
+<h2>YGE Admin Panel - Ready</h2>
 <div class="card">
 <h3>📢 Announcement</h3>
 <textarea id="a" placeholder="Naya elaan likho"></textarea>
@@ -34,18 +34,19 @@ button{padding:10px;background:#facc15;border:0;border-radius:6px;font-weight:bo
 </div>
 <script>
 const SUPA_URL="https://qesradorkbhgmprpaqve.supabase.co";
-const SUPA_KEY="PASTE_YOUR_ANON_KEY_HERE";
+const SUPA_KEY="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFlc3JhZG9ya2JoZ21wcnBhcXZlIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTA2MTI4ODYsImV4cCI6MjEwNjE4ODg4Nn0.Kw9Ls9KR4KxLfJJ_--vCI141yj_Am_drigyCbl4xAao";
 const client=supabase.createClient(SUPA_URL,SUPA_KEY);
 async function addA(){
 let m=document.getElementById('a').value;
-if(!m)return alert('likho');
+if(!m)return alert('Elaan likho');
 let {error}=await client.from('announcements').insert({message:m});
-if(error)alert(error.message);else{alert('Done');loadA();}
+if(error)alert(error.message);else{alert('Done');document.getElementById('a').value='';loadA();}
 }
 async function loadA(){
 let {data}=await client.from('announcements').select('*').order('id',{ascending:false});
-document.getElementById('al').innerHTML=(data||[]).map(x=>'<div style="padding:6px;border-bottom:1px solid #eee">'+x.message+'</div>').join('');
+document.getElementById('al').innerHTML=(data||[]).map(x=>'<div style="padding:8px;border-bottom:1px solid #eee">'+x.message+' <a href="#" onclick="delA('+x.id+')" style="color:red;float:right">Delete</a></div>').join('');
 }
+async function delA(id){await client.from('announcements').delete().eq('id',id);loadA();}
 async function addW(){
 let p={
 student_name:document.getElementById('sn').value,
@@ -62,9 +63,4 @@ if(error)alert(error.message);else{alert('Winner Added');loadW();}
 }
 async function loadW(){
 let {data}=await client.from('winners').select('*').order('id',{ascending:false});
-document.getElementById('wl').innerHTML=(data||[]).map(w=>'<div style="padding:6px;border-bottom:1px solid #eee"><b>'+w.student_name+'</b> - '+w.school_name+'</div>').join('');
-}
-loadA();loadW();
-</script>
-</body>
-</html>
+document.getElementById('wl').innerHTML=(data||[]).map(w=>'<div style="
