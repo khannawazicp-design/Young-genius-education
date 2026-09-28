@@ -1,0 +1,27 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex"><title>Admin - Young Genius</title><link rel="stylesheet" href="style.css"></head><body>
+<header><b>Admin panel</b><small>Young Genius Education</small></header><main id="app"></main>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.js"></script><script src="config.js"></script>
+<script>
+const sb=supabase.createClient(CFG.url,CFG.key),app=document.getElementById("app");
+const q=(s,r=document)=>r.querySelector(s),fd=f=>Object.fromEntries(new FormData(f));
+function el(t,c,x){const n=document.createElement(t);if(c)n.className=c;if(x)n.textContent=x;return n}
+function login(msg){app.innerHTML='<form class="card"><h2>Admin login</h2><label>Email</label><input name="email" type="email" required><label>Password</label><input name="password" type="password" required><button>Log in</button><p id="m"></p></form>';
+ q("#m").textContent=msg||"";q("form").onsubmit=async e=>{e.preventDefault();const {error}=await sb.auth.signInWithPassword(fd(e.target));error?login("Wrong email or password."):panel()}}
+async function panel(){
+ const {data:s}=await sb.from("settings").select("*").eq("id",1).single();
+ const {data:p}=await sb.from("posts").select("*").order("created_at",{ascending:false});
+ const {data:r}=await sb.from("registrations").select("*").order("created_at",{ascending:false});
+ app.innerHTML='<h2>Settings</h2><form class="card" id="fs"><label>Registration fee (Rs.)</label><input name="fee" type="number"><label>Deadline</label><input name="deadline" type="date"><label>Test date</label><input name="test_date" type="date"><label>Status</label><select name="status"><option>Open</option><option>Closed</option></select><label>Announcement</label><textarea name="announcement" rows="3"></textarea><button>Save changes</button></form>'+
+ '<h2>Add school, student or news</h2><form class="card" id="fp"><label>Type</label><select name="kind"><option value="school">Top school</option><option value="student">Top student</option><option value="news">News</option></select><label>Title</label><input name="title" required><label>Details</label><textarea name="body" rows="3"></textarea><button>Add</button></form><p class="ok" id="m"></p><div id="pl"></div>'+
+ '<h2 id="rh"></h2><div style="overflow-x:auto"><table><thead><tr><th>Student</th><th>School</th><th>Class</th><th>Country</th><th>Phone</th></tr></thead><tbody id="rb"></tbody></table></div><button id="out">Log out</button>';
+ const f=q("#fs");for(const k in s)if(f.elements[k])f.elements[k].value=s[k]??"";
+ f.onsubmit=async e=>{e.preventDefault();const v=fd(f);v.fee=+v.fee;const {error}=await sb.from("settings").update(v).eq("id",1);q("#m").textContent=error?"Not allowed: "+error.message:"Saved."};
+ q("#fp").onsubmit=async e=>{e.preventDefault();const {error}=await sb.from("posts").insert(fd(e.target));error?q("#m").textContent="Not allowed.":panel()};
+ (p||[]).forEach(x=>{const c=el("div","card");c.append(el("b","",x.kind+": "+x.title));const b=el("button","","Delete");b.onclick=async()=>{await sb.from("posts").delete().eq("id",x.id);panel()};c.append(" ",b);q("#pl").append(c)});
+ q("#rh").textContent="Registrations ("+(r||[]).length+")";
+ (r||[]).forEach(x=>{const tr=el("tr");[x.student,x.school,x.class_group,x.country,x.phone].forEach(v=>tr.append(el("td","",v||"")));q("#rb").append(tr)});
+ q("#out").onclick=()=>sb.auth.signOut().then(()=>login());
+}
+sb.auth.getSession().then(({data})=>data.session?panel():login());
+</script></body></html>
