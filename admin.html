@@ -1,71 +1,17 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Admin Panel - Young Genius</title>
+<title>YGE Admin - Full System</title>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <style>
-body{font-family:system-ui;padding:20px;background:#f5f5f5}
-.card{background:white;padding:20px;border-radius:12px;max-width:800px;margin:0 auto}
-input,textarea{width:100%;padding:10px;margin:8px 0;border:1px solid #ddd;border-radius:8px}
-button{background:#1a73e8;color:white;border:none;padding:12px;border-radius:8px;width:100%;font-size:16px}
-.success{background:#e6f4ea;color:#137333;padding:10px;border-radius:8px}
-.error{background:#fce8e6;color:#a50e0e;padding:10px;border-radius:8px}
-table{width:100%;border-collapse:collapse;margin-top:15px}
-th,td{border:1px solid #ddd;padding:8px}
-</style>
-</head>
-<body>
-<div class="card">
-<h1>Young Genius - Admin Panel</h1>
-<div id="connectionStatus">Checking...</div>
-<h3>Add New Student</h3>
-<input id="title" placeholder="Student Name / Title">
-<textarea id="content" placeholder="Details"></textarea>
-<button onclick="addData()">Add to Database</button>
-<h3>Recent Data</h3>
-<div id="dataList">Loading...</div>
-</div>
-<script>
-const SUPABASE_URL = "https://qesradorkbhgmprpaqve.supabase.co";
-const SUPABASE_KEY = "sb_publishable_FML5kDxwogFJEAaZ5VgH6w_6QjK_3EB";
-const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
-async function checkConnection(){
-  const el=document.getElementById('connectionStatus');
-  try{
-    const {data,error}=await supabaseClient.from('students').select('*').limit(1);
-    if(error) throw error;
-    el.className='success'; el.innerHTML='✅ Connected to Supabase';
-    loadData();
-  }catch(e){
-    el.className='error'; el.innerHTML='⚠️ '+e.message+' - SQL run karo';
-    loadData();
-  }
-}
-async function addData(){
-  const title=document.getElementById('title').value;
-  const content=document.getElementById('content').value;
-  if(!title){alert('Name likho');return;}
-  try{
-    let res=await supabaseClient.from('students').insert([{name:title,details:content}]);
-    if(res.error){ res=await supabaseClient.from('content').insert([{title:title,description:content}]); }
-    if(res.error) throw res.error;
-    alert('Added!'); loadData();
-  }catch(err){ alert('Error: '+err.message); }
-}
-async function loadData(){
-  const list=document.getElementById('dataList');
-  try{
-    let {data,error}=await supabaseClient.from('students').select('*').order('id',{ascending:false}).limit(20);
-    if(error){ const r2=await supabaseClient.from('content').select('*').limit(20); data=r2.data; }
-    if(!data||data.length==0){ list.innerHTML='No data yet'; return; }
-    let html='<table><tr><th>ID</th><th>Name</th><th>Details</th></tr>';
-    data.forEach(row=>{ html+=`<tr><td>${row.id||''}</td><td>${row.name||row.title||''}</td><td>${row.details||row.description||''}</td></tr>`; });
-    html+='</table>'; list.innerHTML=html;
-  }catch(e){ list.innerHTML='Error: '+e.message; }
-}
-checkConnection();
-</script>
-</body>
-</html>
+*{margin:0;padding:0;box-sizing:border-box;font-family:sans-serif}
+body{background:#f5f7fb;display:flex;min-height:100vh}
+.sidebar{width:260px;background:#111827;color:#fff;padding:20px}
+.sidebar h2{color:#facc15;margin-bottom:30px;line-height:1.2}
+.menu{padding:12px;border-radius:8px;margin-bottom:8px;cursor:pointer}
+.menu.active{background:#1f2937;color:#facc15}
+.main{flex:1;padding:20px;overflow:auto}
+.card{background:#fff;border-radius:12px;padding:18px;margin-bottom:18px;box-shadow:0 2px 8px rgba(0,0,0,.06)}
+.btn{background:#111827;color:#fff;padding:10px 16px;border:0;border-radius:8px;cursor
