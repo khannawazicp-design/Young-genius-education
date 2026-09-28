@@ -1,39 +1,35 @@
 <!DOCTYPE html>
-<html>
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>YGE Admin</title>
+<html><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>YGE Admin - New</title>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <style>
-body{font-family:sans-serif;padding:12px;background:#f5f7fb}
-.card{background:#fff;padding:12px;border-radius:10px;margin-bottom:12px;box-shadow:0 2px 5px rgba(0,0,0,.05)}
-input,textarea{width:100%;padding:10px;margin:6px 0;border:1px solid #ccc;border-radius:6px;box-sizing:border-box}
-button{padding:10px 15px;background:#facc15;border:0;border-radius:6px;font-weight:bold;cursor:pointer}
-</style>
-</head>
-<body>
-<h2>YGE Admin Panel - Ready</h2>
-<div class="card">
-<h3>📢 Announcement</h3>
-<textarea id="a" placeholder="Naya elaan likho"></textarea>
-<button onclick="addA()">Publish</button>
-<div id="al" style="margin-top:10px"></div>
+*{box-sizing:border-box;font-family:sans-serif}body{margin:0;background:#f1f5f9}
+header{background:#101f3c;color:#fff;padding:14px}h2{margin:0}
+.tabs{display:flex;gap:8px;background:#101f3c;padding:0 12px 12px;overflow-x:auto}
+.tabs button{border:0;padding:8px 14px;border-radius:20px;cursor:pointer;background:#1e325e;color:#fff}
+.tabs button.active{background:#facc15;color:#101f3c;font-weight:bold}
+.page{display:none;padding:14px}.page.active{display:block}
+.card{background:#fff;padding:14px;border-radius:12px;margin-bottom:12px;box-shadow:0 1px 3px rgba(0,0,0,.08)}
+input,textarea{width:100%;padding:10px;margin:6px 0;border:1px solid #cbd5e1;border-radius:8px}
+button.save{background:#facc15;border:0;padding:10px 18px;border-radius:8px;font-weight:bold;cursor:pointer}
+.item{padding:10px;border-bottom:1px solid #eee;display:flex;justify-content:space-between;align-items:center}
+.del{color:red;cursor:pointer;font-size:13px}
+</style></head><body>
+<header><h2>YGE Admin Panel</h2><small style="opacity:.7">yoursite.vercel.app/admin2.html</small></header>
+<div class="tabs">
+<button class="active" onclick="openTab('news',this)">📢 News</button>
+<button onclick="openTab('students',this)">🏆 Top Students</button>
+<button onclick="openTab('tests',this)">📝 Tests</button>
 </div>
-<div class="card">
-<h3>🏆 Add Winner</h3>
-<input id="sn" placeholder="Student Name">
-<input id="sc" placeholder="School Name">
-<input id="cl" placeholder="Class">
-<input id="pr" placeholder="Prize">
-<input id="img" placeholder="Image URL https://">
-<input id="vid" placeholder="Youtube URL">
-<textarea id="ds" placeholder="Description"></textarea>
-<button onclick="addW()">Add Winner</button>
-<div id="wl" style="margin-top:10px"></div>
+
+<div id="news" class="page active">
+<div class="card"><h3>News and messages me add karo</h3><p style="color:#666;font-size:13px">Ye Home + News tab me dikhega</p><textarea id="newsMsg" placeholder="Jaise: Kal Mathematics ka result 10 baje elaan hoga"></textarea><button class="save" onclick="addNews()">Publish News</button></div>
+<div class="card"><h3>Published News</h3><div id="newsList">Loading...</div></div>
 </div>
-<script>
-const SUPA_URL="https://qesradorkbhgmprpaqve.supabase.co";
+
+<div id="students" class="page">
+<div class="card"><h3>Top Student Add Karo</h3>
+<input id="sName" placeholder="Student Name *"><input id="sSchool" placeholder="School Name *"><input id="sClass" placeholder="Class - jaise Class 8"><input id="sPrize" placeholder="Prize - jaise 1st Position"><input id="sImg" placeholder="Image Link https:// - Imgur ya
 const SUPA_KEY="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFlc3JhZG9ya2JoZ21wcnBhcXZlIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTA2MTI4ODYsImV4cCI6MjEwNjE4ODg4Nn0.Kw9Ls9KR4KxLfJJ_--vCI141yj_Am_drigyCbl4xAao";
 const client=supabase.createClient(SUPA_URL,SUPA_KEY);
 async function addA(){
