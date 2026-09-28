@@ -4,129 +4,73 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Young Genius Education</title>
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <style>
 *{margin:0;padding:0;box-sizing:border-box;font-family:sans-serif}
 body{background:#f6f5ef}
 header{background:#101f3c;color:#fff;padding:12px 15px;position:sticky;top:0;z-index:100}
 .top{display:flex;align-items:center;gap:10px}
 .logo{background:#facc15;color:#101f3c;width:44px;height:44px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:900;font-size:20px}
-.top h2{font-size:17px;line-height:1.1}
-.top p{font-size:11px;opacity:.8;letter-spacing:.5px}
-nav{display:flex;gap:8px;margin-top:12px;overflow-x:auto;white-space:nowrap;padding-bottom:2px}
-nav button{background:transparent;border:0;color:#cbd5e1;padding:8px 14px;border-radius:20px;cursor:pointer;font-size:14px}
+nav{display:flex;gap:8px;margin-top:12px;overflow-x:auto}
+nav button{background:transparent;border:0;color:#cbd5e1;padding:8px 14px;border-radius:20px;cursor:pointer}
 nav button.active{background:#facc15;color:#101f3c;font-weight:bold}
 .page{display:none;padding:18px}
 .page.active{display:block}
-.card{background:#fff;border-radius:14px;padding:16px;box-shadow:0 1px 4px rgba(0,0,0,.07);margin-bottom:12px}
-.badge{background:#facc15;padding:4px 10px;border-radius:20px;font-size:12px;font-weight:bold}
-.grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
-@media(min-width:600px){.grid{grid-template-columns:repeat(3,1fr)}}
-.winner-img{width:100%;height:160px;object-fit:cover;border-radius:10px}
+.card{background:#fff;border-radius:14px;padding:16px;margin-bottom:12px;box-shadow:0 1px 4px rgba(0,0,0,.07)}
 </style>
 </head>
 <body>
 <header>
-<div class="top">
-<div class="logo">YG</div>
-<div>
-<h2>Young Genius Education</h2>
-<p>Testing • Talent • Achievement • Excellence</p>
-</div>
-</div>
-<nav>
-<button class="active" onclick="showPage('home',this)">Home</button>
-<button onclick="showPage('tests',this)">Tests</button>
-<button onclick="showPage('topschools',this)">Top Schools</button>
-<button onclick="showPage('topstudents',this)">Top Students</button>
-<button onclick="showPage('news',this)">News</button>
+<div class="top"><div class="logo">YG</div><div><h2 style="font-size:17px">Young Genius Education</h2><p style="font-size:11px;opacity:.7">Testing • Talent • Achievement</p></div></div>
+<nav id="nav">
+<button class="active" onclick="show('home',this)">Home</button>
+<button onclick="show('tests',this)">Tests</button>
+<button onclick="show('schools',this)">Top Schools</button>
+<button onclick="show('students',this)">Top Students</button>
+<button onclick="show('news',this)">News</button>
 </nav>
 </header>
 
-<!-- HOME -->
-<div id="home" class="page active">
-<div class="card">
-<h2>Welcome to Young Genius Education 🏆</h2>
-<p style="margin-top:8px;color:#444;line-height:1.5">We test talent, celebrate achievement and build excellence. Check latest results and news.</p>
-</div>
-<div id="home-announce" class="card" style="display:none"></div>
-<div class="card">
-<h3>Quick Links</h3>
-<div style="margin-top:10px;display:flex;gap:10px;flex-wrap:wrap">
-<span class="badge" onclick="showPage('tests',document.querySelectorAll('nav button')[1])">📝 Tests</span>
-<span class="badge" onclick="showPage('topstudents',document.querySelectorAll('nav button')[3])">🏆 Toppers</span>
-<span class="badge" onclick="showPage('news',document.querySelectorAll('nav button')[4])">📢 News</span>
-</div>
-</div>
-</div>
-
-<!-- TESTS -->
-<div id="tests" class="page">
-<h2 style="color:#101f3c;margin-bottom:12px">Upcoming Tests</h2>
-<div class="card"><h3>Mathematics Genius Test</h3><p style="color:#555;margin-top:6px">Registration open for Class 5-10. Test Date: Coming Soon</p></div>
-<div class="card"><h3>Science Talent Search</h3><p style="color:#555;margin-top:6px">For young scientists. Details will be in News tab.</p></div>
-<div class="card"><h3>English Excellence</h3><p style="color:#555;margin-top:6px">Essay & Speaking competition.</p></div>
-</div>
-
-<!-- TOP SCHOOLS -->
-<div id="topschools" class="page">
-<h2 style="color:#101f3c;margin-bottom:12px">Top Schools</h2>
-<div id="school-list"><p>Loading...</p></div>
-</div>
-
-<!-- TOP STUDENTS -->
-<div id="topstudents" class="page">
-<h2 style="color:#101f3c;margin-bottom:12px">Top Students</h2>
-<div id="student-list" class="grid"><p>Loading...</p></div>
-</div>
-
-<!-- NEWS -->
-<div id="news" class="page">
-<h2 style="color:#101f3c;margin-bottom:12px">News and messages</h2>
-<div id="news-list"><p>Loading...</p></div>
-</div>
+<div id="home" class="page active"><div class="card"><h2>Welcome 🏆</h2><p style="margin-top:8px">YGE - Talent Test Platform</p></div><div id="homeNews" class="card" style="display:none"></div></div>
+<div id="tests" class="page"><div class="card"><h3>Mathematics Genius Test</h3><p>Registration Open</p></div><div class="card"><h3>Science Talent Search</h3><p>Coming Soon</p></div></div>
+<div id="schools" class="page"><h2>Top Schools</h2><div id="schoolBox" style="margin-top:12px">Loading...</div></div>
+<div id="students" class="page"><h2>Top Students</h2><div id="studentBox" style="margin-top:12px">Loading...</div></div>
+<div id="news" class="page"><h2>News and messages</h2><div id="newsBox" style="margin-top:12px">Loading...</div></div>
 
 <script>
-const SUPA_URL="https://qesradorkbhgmprpaqve.supabase.co";
-const SUPA_KEY="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFlc3JhZG9ya2JoZ21wcnBhcXZlIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTA2MTI4ODYsImV4cCI6MjEwNjE4ODg4Nn0.Kw9Ls9KR4KxLfJJ_--vCI141yj_Am_drigyCbl4xAao";
-const client=supabase.createClient(SUPA_URL,SUPA_KEY);
-
-function showPage(id,btn){
+function show(id,btn){
  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
  document.getElementById(id).classList.add('active');
  document.querySelectorAll('nav button').forEach(b=>b.classList.remove('active'));
  btn.classList.add('active');
- window.scrollTo(0,0);
- if(id=='news') loadNews();
- if(id=='topstudents') loadStudents();
- if(id=='topschools') loadSchools();
 }
-
-async function loadNews(){
- let {data} = await client.from('announcements').select('*').order('id',{ascending:false});
- let box=document.getElementById('news-list');
- let homeBox=document.getElementById('home-announce');
- if(!data || data.length==0){box.innerHTML='<div class="card">No news yet</div>'; return}
- box.innerHTML=data.map(n=>`<div class="card"><h3 style="color:#101f3c">${n.message.split(' ').slice(0,5).join(' ')}</h3><p style="margin-top:8px;color:#333;line-height:1.5">${n.message}</p><small style="color:#888">${new Date(n.created_at).toLocaleString()}</small></div>`).join('');
- if(data[0]){homeBox.style.display='block'; homeBox.innerHTML=`<b>📢 Latest:</b> ${data[0].message}`}
+</script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+const U="https://qesradorkbhgmprpaqve.supabase.co";
+const K="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFlc3JhZG9ya2JoZ21wcnBhcXZlIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTA2MTI4ODYsImV4cCI6MjEwNjE4ODg4Nn0.Kw9Ls9KR4KxLfJJ_--vCI141yj_Am_drigyCbl4xAao";
+let sb;
+try{sb=supabase.createClient(U,K);}catch(e){}
+async function load(){
+ try{
+  if(!sb) return;
+  let a=await sb.from('announcements').select('*').order('id',{ascending:false});
+  if(a.data && a.data.length){
+   document.getElementById('newsBox').innerHTML=a.data.map(n=>`<div class="card"><p>${n.message}</p><small>${new Date(n.created_at).toLocaleDateString()}</small></div>`).join('');
+   document.getElementById('homeNews').style.display='block';
+   document.getElementById('homeNews').innerHTML='<b>📢 '+a.data[0].message+'</b>';
+  }else{document.getElementById('newsBox').innerHTML='<div class="card">No news yet</div>'}
+  let w=await sb.from('winners').select('*').order('id',{ascending:false});
+  if(w.data && w.data.length){
+   document.getElementById('studentBox').innerHTML=w.data.map(x=>`<div class="card"><img src="${x.image_url||''}" style="width:100%;height:150px;object-fit:cover;border-radius:10px;background:#eee" onerror="this.style.display='none'"><h3 style="margin-top:8px">${x.student_name}</h3><small>${x.school_name||''} - ${x.class_name||''}</small><br><b style="color:#d4a600">${x.prize||''}</b></div>`).join('');
+   let c={}; w.data.forEach(d=>{if(d.school_name) c[d.school_name]=(c[d.school_name]||0)+1});
+   document.getElementById('schoolBox').innerHTML=Object.entries(c).map(([s,n])=>`<div class="card">${s} - ${n} Toppers</div>`).join('')||'<div class="card">No schools yet</div>';
+  }else{
+   document.getElementById('studentBox').innerHTML='<div class="card">No toppers yet. Add from admin2.html</div>';
+   document.getElementById('schoolBox').innerHTML='<div class="card">No schools yet</div>';
+  }
+ }catch(e){console.log(e)}
 }
-
-async function loadStudents(){
- let {data} = await client.from('winners').select('*').order('id',{ascending:false});
- let box=document.getElementById('student-list');
- if(!data || data.length==0){box.innerHTML='<div class="card">No toppers yet</div>'; return}
- box.innerHTML=data.map(w=>`<div class="card" style="padding:10px">
-  <img class="winner-img" src="${w.image_url||'https://via.placeholder.com/300'}" onerror="this.src='https://via.placeholder.com/300'">
-  <h4 style="margin:8px 0 2px">${w.student_name}</h4>
-  <small style="color:#555">${w.school_name||''} - ${w.class_name||''}</small><br>
-  <span class="badge" style="margin-top:6px;display:inline-block">${w.prize||'Winner'}</span>
-  ${w.video_url?`<a href="${w.video_url}" target="_blank" style="display:block;margin-top:8px;background:#101f3c;color:#fff;text-align:center;padding:6px;border-radius:8px;text-decoration:none">▶ Video</a>`:''}
- </div>`).join('');
-}
-
-async function loadSchools(){
- let {data} = await client.from('winners').select('school_name');
- let box=document.getElementById('school-list');
- if(!data || data.length==0){box.innerHTML='<div class="card">No data yet</div>'; return}
- let count={}; data.forEach(d=>{if(!d.school_name)return; count[d.school_name]=(count[d.school_name]||0)+1});
- let sorted=Object.entries(count).sort((a,b)=>b[1]-
+load();
+</script>
+</body>
+</html>
