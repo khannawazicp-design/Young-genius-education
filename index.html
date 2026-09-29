@@ -2,75 +2,57 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Young Genius Education</title>
 <style>
-*{margin:0;padding:0;box-sizing:border-box;font-family:sans-serif}
+*{margin:0;padding:0;box-sizing:border-box;font-family:system-ui,Arial}
 body{background:#f6f5ef}
-header{background:#101f3c;color:#fff;padding:12px 15px;position:sticky;top:0;z-index:100}
+header{background:#101f3c;color:#fff;padding:16px 18px;position:sticky;top:0;z-index:10}
 .top{display:flex;align-items:center;gap:10px}
-.logo{background:#facc15;color:#101f3c;width:44px;height:44px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:900;font-size:20px}
-nav{display:flex;gap:8px;margin-top:12px;overflow-x:auto}
-nav button{background:transparent;border:0;color:#cbd5e1;padding:8px 14px;border-radius:20px;cursor:pointer}
-nav button.active{background:#facc15;color:#101f3c;font-weight:bold}
+.logo{background:#facc15;color:#101f3c;width:38px;height:38px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-weight:800}
+nav{display:flex;gap:8px;margin-top:12px;overflow:auto}
+nav button{background:transparent;border:0;color:#cbd5e1;padding:8px 14px;border-radius:999px;white-space:nowrap;font-weight:600}
+nav button.active{background:#facc15;color:#101f3c}
 .page{display:none;padding:18px}
 .page.active{display:block}
-.card{background:#fff;border-radius:14px;padding:16px;margin-bottom:12px;box-shadow:0 1px 4px rgba(0,0,0,.07)}
+.card{background:#fff;border-radius:14px;padding:16px;margin-bottom:14px;box-shadow:0 2px 8px rgba(0,0,0,.06)}
+.poster-wrap{background:white;border-radius:20px;padding:8px;margin:12px;margin-bottom:16px;box-shadow:0 4px 12px rgba(0,0,0,.06)}
+.poster-wrap img{width:100%;border-radius:16px;display:block}
 </style>
 </head>
 <body>
+
+<!-- YGE GRAND POSTER - FIRST UP -->
+<div class="poster-wrap">
+  <img src="grand-poster.jpg" alt="YGE Grand Academic Competition - Think Learn Achieve">
+</div>
+
 <header>
-<div class="top"><div class="logo">YG</div><div><h2 style="font-size:17px">Young Genius Education</h2><p style="font-size:11px;opacity:.7">Testing • Talent • Achievement</p></div></div>
+<div class="top"><div class="logo">YG</div><div><div style="font-weight:800">Young Genius Education</div><div style="font-size:12px;opacity:.7">Think • Learn • Achieve</div></div></div>
 <nav id="nav">
-<button class="active" onclick="show('home',this)">Home</button>
-<button onclick="show('tests',this)">Tests</button>
-<button onclick="show('schools',this)">Top Schools</button>
-<button onclick="show('students',this)">Top Students</button>
-<button onclick="show('news',this)">News</button>
+<button class="active" onclick="showPage('home',this)">Home</button>
+<button onclick="showPage('about',this)">About</button>
+<button onclick="showPage('competition',this)">Competition</button>
+<button onclick="showPage('contact',this)">Contact</button>
 </nav>
 </header>
 
-<div id="home" class="page active"><div class="card"><h2>Welcome 🏆</h2><p style="margin-top:8px">YGE - Talent Test Platform</p></div><div id="homeNews" class="card" style="display:none"></div></div>
-<div id="tests" class="page"><div class="card"><h3>Mathematics Genius Test</h3><p>Registration Open</p></div><div class="card"><h3>Science Talent Search</h3><p>Coming Soon</p></div></div>
-<div id="schools" class="page"><h2>Top Schools</h2><div id="schoolBox" style="margin-top:12px">Loading...</div></div>
-<div id="students" class="page"><h2>Top Students</h2><div id="studentBox" style="margin-top:12px">Loading...</div></div>
-<div id="news" class="page"><h2>News and messages</h2><div id="newsBox" style="margin-top:12px">Loading...</div></div>
+<div id="home" class="page active">
+<div class="card"><h2>Welcome to YGE</h2><p style="margin-top:8px;color:#475569">Discover Knowledge. Build Your Future. We build confidence through learning.</p></div>
+<div class="card"><h3>Grand Academic Competition</h3><p style="margin-top:6px">For Classes 1-12 • Mathematics, English, Science, Creative Writing</p></div>
+</div>
+
+<div id="about" class="page"><div class="card"><h2>About YGE</h2><p>Quality Education For a Brighter Tomorrow</p></div></div>
+<div id="competition" class="page"><div class="card"><h2>Prizes & Awards</h2><p>1st: US$200 + Gold Medal, 2nd: US$100, 3rd: US$50, All Participants: Certificate</p><img src="grand-poster.jpg" style="width:100%;margin-top:12px;border-radius:12px"></div></div>
+<div id="contact" class="page"><div class="card"><h2>Contact</h2><p>Young Genius Education</p></div></div>
 
 <script>
-function show(id,btn){
- document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
- document.getElementById(id).classList.add('active');
- document.querySelectorAll('nav button').forEach(b=>b.classList.remove('active'));
- btn.classList.add('active');
+function showPage(id,btn){
+document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+document.getElementById(id).classList.add('active');
+document.querySelectorAll('nav button').forEach(b=>b.classList.remove('active'));
+btn.classList.add('active');
 }
-</script>
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script>
-const U="https://qesradorkbhgmprpaqve.supabase.co";
-const K="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFlc3JhZG9ya2JoZ21wcnBhcXZlIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTA2MTI4ODYsImV4cCI6MjEwNjE4ODg4Nn0.Kw9Ls9KR4KxLfJJ_--vCI141yj_Am_drigyCbl4xAao";
-let sb;
-try{sb=supabase.createClient(U,K);}catch(e){}
-async function load(){
- try{
-  if(!sb) return;
-  let a=await sb.from('announcements').select('*').order('id',{ascending:false});
-  if(a.data && a.data.length){
-   document.getElementById('newsBox').innerHTML=a.data.map(n=>`<div class="card"><p>${n.message}</p><small>${new Date(n.created_at).toLocaleDateString()}</small></div>`).join('');
-   document.getElementById('homeNews').style.display='block';
-   document.getElementById('homeNews').innerHTML='<b>📢 '+a.data[0].message+'</b>';
-  }else{document.getElementById('newsBox').innerHTML='<div class="card">No news yet</div>'}
-  let w=await sb.from('winners').select('*').order('id',{ascending:false});
-  if(w.data && w.data.length){
-   document.getElementById('studentBox').innerHTML=w.data.map(x=>`<div class="card"><img src="${x.image_url||''}" style="width:100%;height:150px;object-fit:cover;border-radius:10px;background:#eee" onerror="this.style.display='none'"><h3 style="margin-top:8px">${x.student_name}</h3><small>${x.school_name||''} - ${x.class_name||''}</small><br><b style="color:#d4a600">${x.prize||''}</b></div>`).join('');
-   let c={}; w.data.forEach(d=>{if(d.school_name) c[d.school_name]=(c[d.school_name]||0)+1});
-   document.getElementById('schoolBox').innerHTML=Object.entries(c).map(([s,n])=>`<div class="card">${s} - ${n} Toppers</div>`).join('')||'<div class="card">No schools yet</div>';
-  }else{
-   document.getElementById('studentBox').innerHTML='<div class="card">No toppers yet. Add from admin2.html</div>';
-   document.getElementById('schoolBox').innerHTML='<div class="card">No schools yet</div>';
-  }
- }catch(e){console.log(e)}
-}
-load();
 </script>
 </body>
 </html>
