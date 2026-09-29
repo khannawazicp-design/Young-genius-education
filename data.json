@@ -4,3 +4,51 @@
   "news": [],
   "tests": []
 }
+{
+  "students": [
+    {
+      "pos": "1st",
+      "name": "Muhammad nawaz",
+      "cls": "10th",
+      "sch": "Aps thall"
+    },
+    {
+      "pos": "2nd",
+      "name": "Zahid",
+      "cls": "5th",
+      "sch": "Government primary school hangu"
+    },
+    {
+      "pos": "3rd",
+      "name": "Naqeeb",
+      "cls": "1st",
+      "sch": "Fouji foundation kohat"
+    }
+  ],
+  "schools": [
+    {
+      "pos": "1st",
+      "name": "Aps thall",
+      "res": "97%"
+    },
+    {
+      "pos": "2nd",
+      "name": "Government primary school hangu",
+      "res": "91%"
+    },
+    {
+      "pos": "3rd",
+      "name": "Fouji foundation kohat",
+      "res": "88%"
+    }
+  ],
+  "news": [
+    {
+      "id": 1790682746496,
+      "date": "2026-09-29",
+      "title": "Congratulations to our heroes",
+      "text": "\"Congratulations to all our position holders!\n> This is not just your success, this is a success for Pakistan. Our children have immense talent, they just needed a platform. And today, Young Genius Education has provided that platform.\n> You have proved that when given an opportunity, our youth can shine. We are so proud of you!\""
+    }
+  ],
+  "tests": []
+}
