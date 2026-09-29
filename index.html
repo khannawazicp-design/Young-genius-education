@@ -1,16 +1,48 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>YGE</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>YG - Young Genius Education</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;font-family:system-ui,Arial}
+body{background:#f6f5ef}
+header{background:#101f3c;color:#fff;padding:14px 16px;position:sticky;top:0;z-index:99}
+nav{display:flex;gap:6px;margin-top:12px;overflow-x:auto}
+nav button{border:0;padding:8px 13px;border-radius:999px;background:rgba(255,255,255,.18);color:#cbd5e1;font-weight:700;font-size:13px;white-space:nowrap}
+nav button.active{background:#facc15;color:#101f3c}
+.page{display:none;padding:10px}
+.page.active{display:block}
+.card{background:#fff;border-radius:14px;padding:12px;margin-bottom:10px;box-shadow:0 2px 8px rgba(0,0,0,.06)}
+.card img{width:100%;border-radius:12px;display:block}
+table{width:100%;border-collapse:collapse;margin-top:8px}
+th,td{padding:8px;border-bottom:1px solid #e2e8f0;font-size:13px;text-align:left}
+th{background:#f8fafc}
+.badge{background:#facc15;color:#101f3c;padding:4px 10px;border-radius:999px;font-size:11px;font-weight:800;display:inline-block;margin-bottom:6px}
+</style>
 </head>
-<body style="margin:0;background:#f6f5ef;font-family:Arial">
-<div style="background:#101f3c;color:white;padding:15px">
-<b>YG - Young Genius Education</b><br>
-<small>Think • Learn • Achieve</small>
+<body>
+
+<header>
+<div style="font-weight:800;font-size:18px">YG - Young Genius Education</div>
+<div style="font-size:12px;opacity:.7;margin-top:2px">Think • Learn • Achieve</div>
+<nav>
+<button class="active" onclick="showPage('home',this)">Home</button>
+<button onclick="showPage('test',this)">Test Section</button>
+<button onclick="showPage('topstudent',this)">Top Student</button>
+<button onclick="showPage('topschool',this)">Top School</button>
+<button onclick="showPage('news',this)">News</button>
+</nav>
+</header>
+
+<div id="home" class="page active">
+<div class="card" style="padding:5px"><img src="https://qesradorkbhgmprpaqve.supabase.co/storage/v1/object/public/image/ChatGPT%20Image%20Sep%2028,%202026,%2006_51_47%20PM.png"></div>
+<div class="card"><h3>Welcome to YGE</h3><p style="font-size:13px;color:#555;margin-top:6px">Discover Knowledge. Build Your Future. Grand Academic Competition for Classes 1-12.</p></div>
 </div>
-<img src="https://qesradorkbhgmprpaqve.supabase.co/storage/v1/object/public/image/ChatGPT%20Image%20Sep%2028,%202026,%2006_51_47%20PM.png" style="width:100%;display:block">
-<div style="padding:15px">
-<div style="background:white;padding:15px;border-radius:12px">
-<h3>Welcome to YGE</h
+
+<div id="test" class="page">
+<div class="card"><span class="badge">TEST SECTION</span><h3>Test Details</h3><p style="font-size:13px;margin-top:6px">Classes 1-12<br>Subjects: Math, English, Science, Creative Writing<br>Venue: On Your School Premises<br>Duration: 60 Minutes<br>Result in 15 Days</p></div>
+</div>
+
+<div id="topstudent" class="page">
+<div class="card"><span class="badge">TOP STUDENT</span><h3>Top Students 2026</h3><table><tr>
