@@ -1,29 +1,51 @@
-async function loadLiveData(){
-  try{
-    let res = await fetch('./data.json?v=' + Date.now());
-    let DB = await res.json();
-    
-    // Students
-    if(document.getElementById('topStudentsList')){
-      document.getElementById('topStudentsList').innerHTML = DB.students.map(s=>`
-        <div style="border-left:5px solid #facc15;background:#fffbeb;padding:10px;border-radius:8px;margin-top:8px">
-          <b>${s.pos} - ${s.name}</b><br><small>${s.cls} | ${s.sch}</small>
-        </div>`).join('') || '<p>No result yet</p>';
-    }
-    // Schools
-    if(document.getElementById('topSchoolsList')){
-      document.getElementById('topSchoolsList').innerHTML = DB.schools.map(s=>`
-        <div style="border-left:5px solid #3b82f6;background:#eff6ff;padding:10px;border-radius:8px;margin-top:8px">
-          <b>${s.pos} - ${s.name}</b><br><small>${s.res}</small>
-        </div>`).join('') || '<p>No school yet</p>';
-    }
-    // News
-    if(document.getElementById('newsList')){
-      document.getElementById('newsList').innerHTML = DB.news.map(n=>`
-        <div style="border-left:5px solid #10b981;background:#f0fdf4;padding:10px;border-radius:8px;margin-top:8px">
-          <small>${n.date}</small><br><b>${n.title}</b><br>${n.text}
-        </div>`).join('') || '<p>No news yet</p>';
-    }
-  }catch(e){ console.log('data.json load error', e); }
-}
-loadLiveData();
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>YGE Admin</title>
+<style>
+body{background:#f1f5f9;font-family:Arial;padding:12px}
+.card{background:#fff;padding:16px;border-radius:14px;margin-bottom:12px}
+input,select,textarea{width:100%;padding:11px;margin-top:7px;border:1px solid #ddd;border-radius:10px}
+button{width:100%;padding:12px;border:0;border-radius:10px;font-weight:700;margin-top:10px}
+.save{background:#facc15} .copy{background:#0f172a;color:#fff}
+</style>
+</head>
+<body>
+<div id="loginBox" class="card" style="max-width:360px;margin:70px auto;text-align:center">
+<h3>YGE Admin</h3>
+<input type="password" id="pass" placeholder="Password">
+<button style="background:#0f172a;color:#fff" onclick="login()">Login</button>
+</div>
+<div id="mainBox" style="display:none;max-width:650px;margin:0 auto">
+<div class="card"><h3>Admin Connected ✅</h3></div>
+<div class="card"><h4>Student</h4>
+<select id="s_pos"><option>1st</option><option>2nd</option><option>3rd</option></select>
+<input id="s_name" placeholder="Name"><input id="s_class" placeholder="Class"><input id="s_school" placeholder="School">
+<button class="save" onclick="addS()">Save</button><div id="s_list"></div></div>
+<div class="card"><h4>School</h4>
+<select id="sc_pos"><option>1st</option><option>2nd</option><option>3rd</option></select>
+<input id="sc_name" placeholder="School Name"><input id="sc_res" placeholder="Result">
+<button class="save" onclick="addSc()">Save</button><div id="sc_list"></div></div>
+<div class="card"><h4>News</h4>
+<input type="date" id="n_date"><input id="n_title" placeholder="Title"><textarea id="n_text" placeholder="Detail"></textarea>
+<button class="save" onclick="addN()">Save</button><div id="n_list"></div></div>
+<div class="card" style="border:2px solid #000">
+<h4>Copy Karke data.json me Paste Karein</h4>
+<textarea id="finalCode" rows="14" style="font-size:11px;background:#0f172a;color:#4ade80"></textarea>
+<button class="copy" onclick="navigator.clipboard.writeText(finalCode.value);alert('Copy ho gaya!')">📋 Copy</button>
+</div></div>
+<script>
+const KEY='YGE_FINAL_DATA_V2';
+let db=JSON.parse(localStorage.getItem(KEY)||'{"students":[],"schools":[],"news":[]}');
+function login(){if(pass.value==='YGE2026'){loginBox.style.display='none';mainBox.style.display='block';load();}else alert('Wrong');}
+async function load(){try{let r=await fetch('./data.json?v='+Date.now());if(r.ok){let j=await r.json();if(j.students.length>0||db.students.length==0){db=j;localStorage.setItem(KEY,JSON.stringify(db));}}}catch(e){}render();}
+function addS(){let p=s_pos.value,n=s_name.value.trim(),c=s_class.value.trim(),sc=s_school.value.trim();if(!n)return alert('Name');db.students=db.students.filter(x=>x.pos!==p);db.students.push({pos:p,name:n,cls:c,sch:sc});save();}
+function addSc(){let p=sc_pos.value,n=sc_name.value.trim(),r=sc_res.value.trim();if(!n)return alert('Name');db.schools=db.schools.filter(x=>x.pos!==p);db.schools.push({pos:p,name:n,res:r});save();}
+function addN(){let d=n_date.value,t=n_title.value.trim(),tx=n_text.value.trim();if(!t)return alert('Title');db.news.unshift({id:Date.now(),date:d,title:t,text:tx});save();}
+function save(){localStorage.setItem(KEY,JSON.stringify(db));render();}
+function render(){finalCode.value=JSON.stringify(db,null,2);s_list.innerHTML=db.students.map(x=>`<div>${x.pos}: ${x.name}</div>`).join('');sc_list.innerHTML=db.schools.map(x=>`<div>${x.pos}: ${x.name}</div>`).join('');n_list.innerHTML=db.news.map(x=>`<div>${x.title}</div>`).join('');}
+</script>
+</body>
+</html>
