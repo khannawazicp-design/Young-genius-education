@@ -1,6 +1,8 @@
 <!DOCTYPE html>
 <html><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0"><title>YGE</title>
-<style>*{margin:0;padding:0;box-sizing:border-box;font-family:Arial}body{background:#f6f5ef}header{background:#101f3c;color:#fff;padding:14px;position:sticky;top:0;z-index:10}nav{display:flex;gap:6px;margin-top:10px;overflow-x:auto}nav button{border:0;padding:8px 12px;border-radius:20px;background:#ffffff22;color:#cbd5e1;font-weight:700;font-size:13px;white-space:nowrap}nav button.active{background:#facc15;color:#000}.page{display:none;padding:10px}.page.active{display:block}.card{background:#fff;border-radius:14px;padding:12px;margin-bottom:10px;box-shadow:0 2px 8px rgba(0,0,0,.06)}.card img{width:100%;border-radius:12px;display:block}</style>
+<style>*{margin:0;padding:0;box-sizing:border-box;font-family:Arial}body{background:#f6f5ef}header{background:#101f3c;color:#fff;padding:14px;position:sticky;top:0;z-index:10}nav{display:flex;gap:6px;margin-top:10px;overflow-x:auto}nav button{border:0;padding:8px 12px;border-radius:20px;background:#ffffff22;color:#cbd5e1;font-weight:700;font-size:13px;white-space:nowrap}nav button.active{background:#facc15;color:#000}.page{display:none;padding:10px}.page.active{display:block}.card{background:#fff;border-radius:14px;padding:12px;margin-bottom:10px;box-shadow:0 2px 8px rgba(0,0,0,.06)}.card img{width:100%;border-radius:12px;display:block}
+.live-item{padding:10px;border-radius:10px;margin-top:8px}.live-item.gold{background:#fffbeb;border-left:5px solid #facc15}.live-item.blue{background:#eff6ff;border-left:5px solid #3b82f6}.live-item.green{background:#f0fdf4;border-left:5px solid #10b981}
+.badge{display:inline-block;padding:3px 8px;border-radius:12px;font-size:11px;font-weight:800;background:#facc15;margin-right:4px}.small{font-size:11px;color:#64748b}</style>
 </head><body>
 <header>
 <div style="font-weight:800">YG - Young Genius Education</div>
@@ -13,28 +15,14 @@
 <button id="b5" onclick="show('news','b5')">News</button>
 </nav>
 </header>
-
 <div id="home" class="page active">
 <div class="card" style="padding:5px"><img src="https://qesradorkbhgmprpaqve.supabase.co/storage/v1/object/public/image/ChatGPT%20Image%20Sep%2028,%202026,%2006_51_47%20PM.png"></div>
-<div class="card"><h3>Welcome to YGE</h3><p style="font-size:13px;color:#555;margin-top:5px">Grand Academic Competition for Classes 1-12</p></div>
+<div class="card"><h3>Welcome to YGE</h3><p style="font-size:13px;color:#555;margin-top:5px">Ab website automatic hai! Admin se jo add karoge wo yahan sab ko nazar aayega.</p></div>
 </div>
-
-<div id="test" class="page">
-<div class="card"><h3>Test Section</h3><p style="font-size:13px;margin-top:6px">Classes: 1-12<br>Subjects: Math, English, Science, Creative Writing<br>Venue: Your School Premises<br>Time: 60 Minutes</p></div>
-</div>
-
-<div id="topstu" class="page">
-<div class="card"><h3>Top Student 2026</h3><p style="font-size:13px;margin-top:6px">🥇 Ahmed Ali - 10th - 1st<br>🥈 Fatima Khan - 9th - 2nd<br>🥉 Usman Tariq - 12th - 3rd</p></div>
-</div>
-
-<div id="topsch" class="page">
-<div class="card"><h3>Top School 2026</h3><p style="font-size:13px;margin-top:6px">🥇 Govt High School Lahore - 92%<br>🥈 Ideal Public School - 89%<br>🥉 City Grammar - 87%</p></div>
-</div>
-
-<div id="news" class="page">
-<div class="card"><h3>News</h3><p style="font-size:13px;margin-top:6px"><b>28 Sep:</b> Grand Competition Announced<br><br><b>15 Sep:</b> New Syllabus Released<br><br><b>01 Sep:</b> Website Launched</p></div>
-</div>
-
+<div id="test" class="page"><div class="card"><h3>Test Section</h3><p style="font-size:13px;margin-top:6px">Classes: 1-12<br>Subjects: Math, English, Science, Creative Writing<br>Venue: Your School Premises<br>Time: 60 Minutes</p></div></div>
+<div id="topstu" class="page"><div class="card"><h3>🏆 Top Student 2026 - Live</h3><div id="liveStudents">Loading...</div></div></div>
+<div id="topsch" class="page"><div class="card"><h3>🏫 Top School 2026 - Live</h3><div id="liveSchools">Loading...</div></div></div>
+<div id="news" class="page"><div class="card"><h3>📰 Latest News - Live</h3><div id="liveNews">Loading...</div></div></div>
 <script>
 function show(id,bid){
 document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
@@ -42,5 +30,20 @@ document.getElementById(id).classList.add('active');
 document.querySelectorAll('nav button').forEach(b=>b.classList.remove('active'));
 document.getElementById(bid).classList.add('active');
 }
+async function loadLive(){
+  try{
+    let res = await fetch('./data.json?v='+Date.now());
+    let db = await res.json();
+    let sBox = document.getElementById('liveStudents');
+    sBox.innerHTML = db.students.length ? db.students.map(s=>`<div class="live-item gold"><span class="badge">${s.pos}</span> <b>${s.name}</b><br><span class="small">${s.cls||''} ${s.sch?' | '+s.sch:''}</span></div>`).join('') : 'Abhi koi Student nahi';
+    let scBox = document.getElementById('liveSchools');
+    scBox.innerHTML = db.schools.length ? db.schools.map(s=>`<div class="live-item blue"><span class="badge" style="background:#3b82f6;color:#fff">${s.pos}</span> <b>${s.name}</b><br><span class="small">${s.res||''}</span></div>`).join('') : 'Abhi koi School nahi';
+    let nBox = document.getElementById('liveNews');
+    nBox.innerHTML = db.news.length ? db.news.map(n=>`<div class="live-item green"><span class="small">${n.date||''}</span><br><b>${n.title}</b><br>${n.text||''}</div>`).join('') : 'Abhi koi News nahi';
+  }catch(e){
+    document.getElementById('liveStudents').innerHTML = 'data.json me data paste karein';
+  }
+}
+loadLive();
 </script>
 </body></html>
