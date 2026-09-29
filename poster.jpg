@@ -1,14 +1,12 @@
-<div style={{ width: '100%', backgroundColor: '#ffffff', padding: '20px 0', textAlign: 'center' }}>
+<div style={{ backgroundColor: 'white', borderRadius: '16px', padding: '12px', marginTop: '12px', boxShadow: '0 2px 8px rgba(0,0,0,0.06)' }}>
   <img 
-    src="/poster.jpg"
-    alt="Young Genius Education - Grand Academic Competition"
-    style={{ 
-      width: '95%', 
-      maxWidth: '900px', 
-      margin: '0 auto', 
-      display: 'block',
-      borderRadius: '20px',
-      boxShadow: '0 10px 30px rgba(0,0,0,0.15)'
-    }}
+    src="/competition-banner.jpg" 
+    alt="Grand Academic Competition 2026-27"
+    style={{ width: '100%', borderRadius: '12px' }}
   />
+  <div style={{ marginTop: '10px', textAlign: 'center' }}>
+    <a href="/register" style={{ backgroundColor: '#FFD60A', color: 'black', padding: '10px 24px', borderRadius: '20px', fontWeight: 'bold', display: 'inline-block', textDecoration: 'none' }}>
+      Register Now
+    </a>
+  </div>
 </div>
