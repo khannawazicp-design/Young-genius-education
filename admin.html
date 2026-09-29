@@ -1,41 +1,111 @@
-<!DOCTYPE html><html><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>YGE Admin Pro</title><style>body{background:#eef2f7;font-family:Arial;padding:10px}.card{background:#fff;padding:14px;border-radius:12px;margin-bottom:12px}input,select,textarea{width:100%;padding:10px;margin-top:6px;border:1px solid #ddd;border-radius:8px}button{padding:11px;border:0;border-radius:8px;font-weight:700;width:100%;margin-top:8px} .save{background:#facc15;color:#000}.del{background:#ef4444;color:#fff;width:auto;padding:4px 12px;font-size:12px} .item{display:flex;justify-content:space-between;align-items:center;background:#f8fafc;padding:8px;border-radius:8px;margin-top:6px;font-size:13px;border:1px solid #eee}</style></head><body>
-<div id="login" class="card" style="max-width:350px;margin:70px auto;text-align:center"><h3>YGE Admin Login</h3><input type="password" id="pass" placeholder="Password: YGE2026"><button style="background:#101f3c;color:#fff" onclick="if(document.getElementById('pass').value==='YGE2026'){document.getElementById('login').style.display='none';document.getElementById('panel').style.display='block';load()}else alert('Wrong Password')">Login</button></div>
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>YGE Admin Pro</title>
+<style>
+body{background:#eef2f7;font-family:Arial;padding:10px}
+.card{background:#fff;padding:14px;border-radius:12px;margin-bottom:12px}
+input,select,textarea{width:100%;padding:10px;margin-top:6px;border:1px solid #ddd;border-radius:8px}
+button{padding:11px;border:0;border-radius:8px;font-weight:700;width:100%;margin-top:8px}
+.save{background:#facc15;color:#000}
+.del{background:#ef4444;color:#fff;width:auto;padding:4px 12px;font-size:12px}
+.item{display:flex;justify-content:space-between;align-items:center;background:#f8fafc;padding:8px;border-radius:8px;margin-top:6px;font-size:13px;border:1px solid #eee}
+</style>
+</head>
+<body>
+
+<div id="login" class="card" style="max-width:350px;margin:70px auto;text-align:center">
+<h3>YGE Admin Login</h3>
+<input type="password" id="pass" placeholder="Password: YGE2026">
+<button style="background:#101f3c;color:#fff" onclick="checkPass()">Login</button>
+</div>
 
 <div id="panel" style="display:none">
-<div class="card"><h3>YGE Admin - Full Control</h3><a href="/">← Website Dekhein</a></div>
+<div class="card"><h3>YGE Admin</h3><a href="/">← Website Dekhein</a></div>
 
-<div class="card"><h4>🏆 Top Student - Alag Alag Position</h4>
-<select id="s_pos"><option value="1st">🥇 1st Position</option><option value="2nd">🥈 2nd Position</option><option value="3rd">🥉 3rd Position</option></select>
+<div class="card">
+<h4>Top Student</h4>
+<select id="s_pos">
+<option value="1st">1st Position</option>
+<option value="2nd">2nd Position</option>
+<option value="3rd">3rd Position</option>
+</select>
 <input id="s_name" placeholder="Student Name">
-<input id="s_class" placeholder="Class e.g 10th">
+<input id="s_class" placeholder="Class">
 <input id="s_school" placeholder="School Name">
 <button class="save" onclick="addS()">Add / Update Student</button>
 <div id="s_list"></div>
 </div>
 
-<div class="card"><h4>🏫 Top School - Alag Alag Position</h4>
-<select id="sc_pos"><option value="1st">🥇 1st Position</option><option value="2nd">🥈 2nd Position</option><option value="3rd">🥉 3rd Position</option></select>
+<div class="card">
+<h4>Top School</h4>
+<select id="sc_pos">
+<option value="1st">1st Position</option>
+<option value="2nd">2nd Position</option>
+<option value="3rd">3rd Position</option>
+</select>
 <input id="sc_name" placeholder="School Name">
-<input id="sc_res" placeholder="Result e.g 92%">
+<input id="sc_res" placeholder="Result">
 <button class="save" onclick="addSc()">Add / Update School</button>
 <div id="sc_list"></div>
 </div>
 
-<div class="card"><h4>📰 Daily News - Rozana Update</h4>
+<div class="card">
+<h4>Daily News</h4>
 <input type="date" id="n_date">
 <input id="n_title" placeholder="News Title">
-<textarea id="n_text" placeholder="Mukammal News Likhein"></textarea>
+<textarea id="n_text" placeholder="Mukammal News"></textarea>
 <button class="save" onclick="addN()">Add News</button>
 <div id="n_list"></div>
 </div>
-
 </div>
+
 <script>
-let db = JSON.parse(localStorage.getItem('YGE_FINAL_PRO')||'{"students":[],"schools":[],"news":[]}');
-function save(){localStorage.setItem('YGE_FINAL_PRO',JSON.stringify(db)); load();}
-function addS(){let p=document.getElementById('s_pos').value, n=document.getElementById('s_name').value, c=document.getElementById('s_class').value, sc=document.getElementById('s_school').value; if(!n) return alert('Name likhein'); db.students = db.students.filter(x=>x.pos!==p); db.students.push({pos:p,name:n,cls:c,sch:sc}); db.students.sort((a,b)=>a.pos.localeCompare(b.pos)); save(); s_name.value=''; s_class.value=''; s_school.value='';}
-function addSc(){let p=document.getElementById('sc_pos').value, n=document.getElementById('sc_name').value, r=document.getElementById('sc_res').value; if(!n) return alert('School likhein'); db.schools = db.schools.filter(x=>x.pos!==p); db.schools.push({pos:p,name:n,res:r}); save(); sc_name.value=''; sc_res.value='';}
-function addN(){let d=document.getElementById('n_date').value, t=document.getElementById('n_title').value, txt=document.getElementById('n_text').value; if(!t) return alert('Title likhein'); db.news.unshift({id:Date.now(),date:d,title:t,text:txt}); save(); n_title.value=''; n_text.value='';}
-function del(type,id){if(type==='s') db.students=db.students.filter(x=>x.pos!==id); if(type==='sc') db.schools=db.schools.filter(x=>x.pos!==id); if(type==='n') db.news=db.news.filter(x=>x.id!==id); save();}
-function load(){s_list.innerHTML=db.students.map(x=>`<div class=item><span><b>${x.pos} - ${x.name}</b> (${x.cls}) - ${x.sch}</span><button class=del onclick="del('s','${x.pos}')">Delete</button></div>`).join(''); sc_list.innerHTML=db.schools.map(x=>`<div class=item><span><b>${x.pos} - ${x.name}</b> ${x.res}</span><button class=del onclick="del('sc','${x.pos}')">Delete</button></div>`).join(''); n_list.innerHTML=db.news.map(x=>`<div class=item><span><b>${x.title}</b><br><small>${x.date} - ${x.text}</small></span><button class=del onclick="del('n',${x.id})">Delete</button></div>`).join('');}
-</script></body></html>
+let db = JSON.parse(localStorage.getItem('YGE_FINAL_DB') || '{"students":[],"schools":[],"news":[]}');
+
+function checkPass(){
+  let p = document.getElementById('pass').value;
+  if(p === 'YGE2026'){
+    document.getElementById('login').style.display = 'none';
+    document.getElementById('panel').style.display = 'block';
+    load();
+  } else {
+    alert('Wrong Password');
+  }
+}
+
+function save(){
+  localStorage.setItem('YGE_FINAL_DB', JSON.stringify(db));
+  load();
+}
+
+function addS(){
+  let pos = document.getElementById('s_pos').value;
+  let name = document.getElementById('s_name').value;
+  let cls = document.getElementById('s_class').value;
+  let sch = document.getElementById('s_school').value;
+  if(!name){ alert('Name likhein'); return; }
+  db.students = db.students.filter(x => x.pos !== pos);
+  db.students.push({pos:pos, name:name, cls:cls, sch:sch});
+  save();
+  document.getElementById('s_name').value='';
+  document.getElementById('s_class').value='';
+  document.getElementById('s_school').value='';
+}
+
+function addSc(){
+  let pos = document.getElementById('sc_pos').value;
+  let name = document.getElementById('sc_name').value;
+  let res = document.getElementById('sc_res').value;
+  if(!name){ alert('School likhein'); return; }
+  db.schools = db.schools.filter(x => x.pos !== pos);
+  db.schools.push({pos:pos, name:name, res:res});
+  save();
+  document.getElementById('sc_name').value='';
+  document.getElementById('sc_res').value='';
+}
+
+function addN(){
+ 
