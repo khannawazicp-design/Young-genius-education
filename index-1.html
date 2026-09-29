@@ -1,0 +1,51 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Young Genius Education</title><link rel="stylesheet" href="style.css"></head><body>
+<header><b>Young Genius Education</b><small>Think &bull; Learn &bull; Achieve</small></header>
+<main>
+<div class="hero"><h1 style="margin:0">Discover Knowledge. Build Your Future.</h1>
+<p>Grand Academic Competition for classes 1-12, for bright minds and a better tomorrow. Open to students in Pakistan and international students abroad.</p>
+<div class="fee" id="fee"></div><div id="dates"></div></div>
+<div class="card" id="ann" hidden></div>
+
+<h2>Test subjects</h2><div class="grid" id="subjects"></div>
+
+<h2>Prizes and awards</h2><div class="grid" id="prizes"></div>
+<div class="card" id="venue" hidden></div>
+
+<h2>Register</h2><div id="reg"></div>
+<div id="lists"></div>
+</main>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.js"></script><script src="config.js"></script>
+<script>
+const sb=supabase.createClient(CFG.url,CFG.key),$=i=>document.getElementById(i);
+const fmt=d=>d?new Date(d).toLocaleDateString("en-GB",{day:"numeric",month:"long",year:"numeric"}):"";
+function el(t,c,x){const n=document.createElement(t);if(c)n.className=c;if(x)n.textContent=x;return n}
+function simpleCards(id,items){const g=el("div","grid");items.forEach(x=>{const c=el("div","card");c.append(el("b","",x.title),document.createElement("br"),x.body||"");g.append(c)});$(id).replaceWith(g);g.id=id}
+function richCards(items){const g=el("div","grid");items.forEach(x=>{const c=el("div","card");
+ let head=x.title;if(x.class_group)head+=" \u2022 "+x.class_group;if(x.position)head+=" \u2022 "+x.position;
+ c.append(el("b","",head));
+ if(x.photo_url){const img=document.createElement("img");img.src=x.photo_url;img.alt=x.title;img.style.cssText="width:100%;border-radius:8px;margin-top:8px";c.append(img)}
+ if(x.body)c.append(document.createElement("br"),x.body);
+ if(x.video_url)c.append(document.createElement("br"),Object.assign(document.createElement("a"),{href:x.video_url,textContent:"Watch video",target:"_blank"}));
+ g.append(c)});return g}
+(async()=>{
+ const {data:s}=await sb.from("settings").select("*").eq("id",1).single();
+ if(!s){document.body.append("Could not load. Check config.js.");return}
+ $("fee").textContent="Rs. "+s.fee;
+ $("dates").textContent="Registration "+s.status.toLowerCase()+" \u2022 closes "+fmt(s.deadline)+" \u2022 test date "+fmt(s.test_date);
+ if(s.announcement){$("ann").hidden=false;$("ann").textContent=s.announcement}
+ if(s.venue){$("venue").hidden=false;$("venue").innerHTML="<b>Venue</b><br>"+s.venue}
+ if(s.status==="Open"){$("reg").innerHTML='<form class="card"><label>Student name</label><input name="student" required><label>School</label><input name="school" required><label>Class group</label><select name="class_group"><option>1-2</option><option>3-4</option><option>5-6</option><option>7-8</option><option>9-10</option><option>11-12</option></select><label>Country</label><input name="country" value="Pakistan" required><label>Parent phone / WhatsApp</label><input name="phone" required><button>Submit registration</button><p class="ok" id="m"></p></form>';
+  $("reg").firstChild.onsubmit=async e=>{e.preventDefault();const {error}=await sb.from("registrations").insert(Object.fromEntries(new FormData(e.target)));
+   $("m").textContent=error?"Could not register. Please try again.":"Registration received. Thank you!";if(!error)e.target.reset()}}
+ else $("reg").textContent="Registration is closed.";
+ const {data:p}=await sb.from("posts").select("*").order("created_at",{ascending:false});
+ const list=k=>(p||[]).filter(x=>x.kind===k);
+ simpleCards("subjects",list("subject"));
+ simpleCards("prizes",list("prize"));
+ [["school","Top schools"],["student","Top students"],["news","News and messages"]].forEach(([k,t])=>{
+  const l=list(k);if(!l.length)return;$("lists").append(el("h2","",t));
+  $("lists").append(k==="news"?(()=>{const g=el("div","grid");l.forEach(x=>{const c=el("div","card");c.append(el("b","",x.title),document.createElement("br"),x.body||"");g.append(c)});return g})():richCards(l))
+ })
+})();
+</script></body></html>
