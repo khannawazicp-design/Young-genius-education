@@ -1,127 +1,29 @@
-<!DOCTYPE html>
-<html>
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>YGE Admin - Test ke Mutabiq</title>
-<style>
-body{background:#eef2f7;font-family:Arial;padding:10px}
-.card{background:#fff;padding:14px;border-radius:12px;margin-bottom:12px}
-input,select,textarea{width:100%;padding:10px;margin-top:6px;border:1px solid #ddd;border-radius:8px}
-button{padding:11px;border:0;border-radius:8px;font-weight:700;width:100%;margin-top:8px}
-.save{background:#facc15;color:#000}
-.del{background:#ef4444;color:#fff;width:auto;padding:4px 10px;font-size:12px}
-.item{display:flex;justify-content:space-between;align-items:center;background:#f8fafc;padding:8px;border-radius:8px;margin-top:6px;font-size:13px;border:1px solid #eee}
-.qbox{background:#f8fafc;border:1px dashed #cbd5e1;padding:10px;border-radius:8px;margin-top:8px}
-</style>
-</head>
-<body>
-
-<div id="loginBox" class="card" style="max-width:350px;margin:60px auto;text-align:center">
-<h3>YGE Admin Login</h3>
-<input type="password" id="pass" placeholder="Password: YGE2026">
-<button style="background:#101f3c;color:#fff" onclick="doLogin()">Login</button>
-</div>
-
-<div id="mainBox" style="display:none">
-<div class="card"><h3>YGE Admin Panel</h3><a href="/">← Website Dekhein</a><br><small style="color:green">Test wala hissa ab aapki website ke mutabiq hai</small></div>
-
-<div class="card">
-<h4>📝 Test Add Karein (Aapke Tez Wale System Ke Mutabiq)</h4>
-<input id="t_title" placeholder="Test Title e.g Islamiyat Class 10th">
-<input id="t_class" placeholder="Class e.g 10th">
-<input type="number" id="t_time" placeholder="Time in Minutes e.g 10">
-<div id="questions"></div>
-<button style="background:#e2e8f0;color:#000" onclick="addQuestionBox()">+ Sawal Add Karein</button>
-<button class="save" onclick="saveTest()">Test Save Karein</button>
-<div id="t_list"></div>
-</div>
-
-<div class="card">
-<h4>🏆 Top Student (Alag Position)</h4>
-<select id="s_pos"><option value="1st">1st</option><option value="2nd">2nd</option><option value="3rd">3rd</option></select>
-<input id="s_name" placeholder="Name e.g Muhammad Nawaz">
-<input id="s_class" placeholder="Class">
-<input id="s_school" placeholder="School">
-<button class="save" onclick="saveStudent()">Student Save</button>
-<div id="s_list"></div>
-</div>
-
-<div class="card">
-<h4>🏫 Top School</h4>
-<select id="sc_pos"><option value="1st">1st</option><option value="2nd">2nd</option><option value="3rd">3rd</option></select>
-<input id="sc_name" placeholder="School Name">
-<input id="sc_res" placeholder="Result e.g 95%">
-<button class="save" onclick="saveSchool()">School Save</button>
-<div id="sc_list"></div>
-</div>
-
-<div class="card">
-<h4>📰 News</h4>
-<input type="date" id="n_date"><input id="n_title" placeholder="Title"><textarea id="n_text" placeholder="News"></textarea>
-<button class="save" onclick="saveNews()">News Save</button>
-<div id="n_list"></div>
-</div>
-</div>
-
-<script>
-const KEY = 'YGE_FINAL_DB';
-let db = JSON.parse(localStorage.getItem(KEY) || '{"students":[],"schools":[],"news":[],"tests":[]}');
-let qCount = 0;
-
-function doLogin(){
-  if(document.getElementById('pass').value === 'YGE2026'){
-    document.getElementById('loginBox').style.display='none';
-    document.getElementById('mainBox').style.display='block';
-    showData();
-  } else alert('Password Ghalat! YGE2026');
+async function loadLiveData(){
+  try{
+    let res = await fetch('./data.json?v=' + Date.now());
+    let DB = await res.json();
+    
+    // Students
+    if(document.getElementById('topStudentsList')){
+      document.getElementById('topStudentsList').innerHTML = DB.students.map(s=>`
+        <div style="border-left:5px solid #facc15;background:#fffbeb;padding:10px;border-radius:8px;margin-top:8px">
+          <b>${s.pos} - ${s.name}</b><br><small>${s.cls} | ${s.sch}</small>
+        </div>`).join('') || '<p>No result yet</p>';
+    }
+    // Schools
+    if(document.getElementById('topSchoolsList')){
+      document.getElementById('topSchoolsList').innerHTML = DB.schools.map(s=>`
+        <div style="border-left:5px solid #3b82f6;background:#eff6ff;padding:10px;border-radius:8px;margin-top:8px">
+          <b>${s.pos} - ${s.name}</b><br><small>${s.res}</small>
+        </div>`).join('') || '<p>No school yet</p>';
+    }
+    // News
+    if(document.getElementById('newsList')){
+      document.getElementById('newsList').innerHTML = DB.news.map(n=>`
+        <div style="border-left:5px solid #10b981;background:#f0fdf4;padding:10px;border-radius:8px;margin-top:8px">
+          <small>${n.date}</small><br><b>${n.title}</b><br>${n.text}
+        </div>`).join('') || '<p>No news yet</p>';
+    }
+  }catch(e){ console.log('data.json load error', e); }
 }
-function saveDB(){ localStorage.setItem(KEY, JSON.stringify(db)); showData(); }
-
-function addQuestionBox(){
-  qCount++;
-  let div = document.createElement('div');
-  div.className = 'qbox';
-  div.innerHTML = `<b>Sawal ${qCount}</b><input id="q_${qCount}" placeholder="Sawal likhein"><input id="o1_${qCount}" placeholder="Option A"><input id="o2_${qCount}" placeholder="Option B"><input id="o3_${qCount}" placeholder="Option C"><input id="o4_${qCount}" placeholder="Option D"><select id="ans_${qCount}"><option value="0">Sahi Jawab: A</option><option value="1">Sahi Jawab: B</option><option value="2">Sahi Jawab: C</option><option value="3">Sahi Jawab: D</option></select>`;
-  document.getElementById('questions').appendChild(div);
-}
-function saveTest(){
-  let title = document.getElementById('t_title').value;
-  let cls = document.getElementById('t_class').value;
-  let time = document.getElementById('t_time').value || 10;
-  if(!title) return alert('Test Title likhein');
-  let qs = [];
-  for(let i=1; i<=qCount; i++){
-    let q = document.getElementById('q_'+i);
-    if(!q) continue;
-    qs.push({
-      q: q.value,
-      options: [
-        document.getElementById('o1_'+i).value,
-        document.getElementById('o2_'+i).value,
-        document.getElementById('o3_'+i).value,
-        document.getElementById('o4_'+i).value
-      ],
-      correct: parseInt(document.getElementById('ans_'+i).value)
-    });
-  }
-  if(qs.length==0) return alert('Kam se kam 1 sawal add karen');
-  db.tests = db.tests || [];
-  db.tests.push({id:Date.now(), title:title, class:cls, time:time, questions:qs});
-  saveDB();
-  document.getElementById('t_title').value=''; document.getElementById('questions').innerHTML=''; qCount=0;
-}
-function saveStudent(){ let pos=s_pos.value, name=s_name.value, cls=s_class.value, sch=s_school.value; if(!name) return alert('Name'); db.students=db.students.filter(x=>x.pos!==pos); db.students.push({pos,name,cls,sch}); saveDB(); }
-function saveSchool(){ let pos=sc_pos.value, name=sc_name.value, res=sc_res.value; if(!name) return alert('School'); db.schools=db.schools.filter(x=>x.pos!==pos); db.schools.push({pos,name,res}); saveDB(); }
-function saveNews(){ let d=n_date.value, t=n_title.value, txt=n_text.value; if(!t) return alert('Title'); db.news.unshift({id:Date.now(),date:d,title:t,text:txt}); saveDB(); }
-function deleteItem(type,id){ if(type==='t') db.tests=db.tests.filter(x=>x.id!==id); if(type==='s') db.students=db.students.filter(x=>x.pos!==id); if(type==='sc') db.schools=db.schools.filter(x=>x.pos!==id); if(type==='n') db.news=db.news.filter(x=>x.id!==id); saveDB(); }
-function showData(){
-  document.getElementById('t_list').innerHTML = (db.tests||[]).map(x=>`<div class="item"><span><b>${x.title}</b> - ${x.questions.length} Qs</span><button class="del" onclick="deleteItem('t',${x.id})">Delete</button></div>`).join('');
-  document.getElementById('s_list').innerHTML = db.students.map(x=>`<div class="item"><span><b>${x.pos} - ${x.name}</b></span><button class="del" onclick="deleteItem('s','${x.pos}')">Del</button></div>`).join('');
-  document.getElementById('sc_list').innerHTML = db.schools.map(x=>`<div class="item"><span><b>${x.pos} - ${x.name}</b></span><button class="del" onclick="deleteItem('sc','${x.pos}')">Del</button></div>`).join('');
-  document.getElementById('n_list').innerHTML = db.news.map(x=>`<div class="item"><span><b>${x.title}</b></span><button class="del" onclick="deleteItem('n',${x.id})">Del</button></div>`).join('');
-}
-addQuestionBox();
-</script>
-</body>
-</html>
+loadLiveData();
