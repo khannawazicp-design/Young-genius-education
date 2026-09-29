@@ -1,0 +1,9 @@
+{/* YGE GRAND COMPETITION BANNER - START */}
+<div className="bg-white rounded-2xl p-3 mt-3 shadow-sm">
+  <img 
+    src="/grand-poster.jpg?v=2"
+    alt="Grand Academic Competition"
+    className="w-full rounded-xl"
+  />
+</div>
+{/* YGE GRAND COMPETITION BANNER - END */}
