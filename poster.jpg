@@ -1,11 +1,14 @@
-{/* GRAND ACADEMIC COMPETITION POSTER */}
-<section className="py-10 bg-white">
-  <div className="container mx-auto px-4 text-center">
-    <h2 className="text-3xl font-bold mb-6">Grand Academic Competition 2026-27</h2>
-    <img 
-      src="/poster.jpg" 
-      alt="Young Genius Education - Grand Academic Competition For Classes 1-12"
-      className="mx-auto rounded-2xl shadow-2xl max-w-4xl w-full"
-    />
-  </div>
-</section>
+<div style={{ width: '100%', backgroundColor: '#ffffff', padding: '20px 0', textAlign: 'center' }}>
+  <img 
+    src="/poster.jpg"
+    alt="Young Genius Education - Grand Academic Competition"
+    style={{ 
+      width: '95%', 
+      maxWidth: '900px', 
+      margin: '0 auto', 
+      display: 'block',
+      borderRadius: '20px',
+      boxShadow: '0 10px 30px rgba(0,0,0,0.15)'
+    }}
+  />
+</div>
