@@ -1,81 +1,66 @@
 <!DOCTYPE html>
-<html><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0"><title>YGE Admin</title>
-<style>body{margin:0;font-family:Arial;background:#f6f5ef;padding:15px} .card{background:#fff;padding:15px;border-radius:12px;margin-bottom:12px;box-shadow:0 2px 8px rgba(0,0,0,.06)} input,textarea{width:100%;padding:10px;margin-top:6px;margin-bottom:10px;border:1px solid #ddd;border-radius:8px} button{border:0;padding:10px 16px;border-radius:8px;background:#101f3c;color:#fff;font-weight:700;cursor:pointer} .login{max-width:350px;margin:80px auto} .hidden{display:none}</style>
-</head><body>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>YG - Young Genius Education</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;font-family:Arial}
+body{background:#f6f5ef}
+header{background:#101f3c;color:#fff;padding:14px;position:sticky;top:0;z-index:10}
+nav{display:flex;gap:6px;margin-top:10px;overflow-x:auto}
+nav button{border:0;padding:8px 12px;border-radius:20px;background:#ffffff22;color:#cbd5e1;font-weight:700;font-size:13px;white-space:nowrap}
+nav button.active{background:#facc15;color:#000}
+.page{display:none;padding:10px}
+.page.active{display:block}
+.card{background:#fff;border-radius:14px;padding:12px;margin-bottom:10px}
+.card img{width:100%;border-radius:12px;display:block}
+</style>
+</head>
+<body>
 
-<div id="loginBox" class="login card">
-<h3>YGE Admin Login</h3>
-<p style="font-size:12px;color:#666;margin-top:4px">Password dalen</p>
-<input type="password" id="pass" placeholder="Password">
-<button onclick="login()" style="width:100%">Login</button>
-<p id="err" style="color:red;font-size:12px;display:none;margin-top:8px">Wrong Password!</p>
+<header>
+<div style="font-weight:800">YG - Young Genius Education</div>
+<div style="font-size:11px;opacity:.7">Think • Learn • Achieve</div>
+<nav>
+<button class="active" id="b1" onclick="show('home','b1')">Home</button>
+<button id="b2" onclick="show('test','b2')">Test Section</button>
+<button id="b3" onclick="show('topstu','b3')">Top Student</button>
+<button id="b4" onclick="show('topsch','b4')">Top School</button>
+<button id="b5" onclick="show('news','b5')">News</button>
+</nav>
+</header>
+
+<div id="home" class="page active">
+<div class="card" style="padding:5px"><img src="grand-poster.jpg"></div>
+<div class="card"><h3>Welcome to YGE</h3><p style="font-size:13px;color:#555">Grand Academic Competition - Classes 1-12</p></div>
 </div>
 
-<div id="adminBox" class="hidden">
-<div class="card">
-<h3>Admin Panel - Young Genius Education</h3>
-<p style="font-size:12px;color:#666">Yahan se aap Top Student, Top School, News edit kar sakte hain. Edit karke Save karein, phir naya code copy karke index.html me paste karna hoga.</p>
-<div style="margin-top:10px"><a href="/" style="font-size:13px">← Back to Website</a></div>
+<div id="test" class="page">
+<div class="card"><h3>Test Section</h3><p style="font-size:13px">Classes: 1-12<br>Subjects: Math, English, Science, Creative Writing<br>Venue: Your School Premises<br>Time: 60 Minutes</p></div>
 </div>
 
-<div class="card">
-<h4>Test Section</h4>
-<textarea id="testText" rows="4">Classes: 1-12
-Subjects: Math, English, Science, Creative Writing
-Venue: On Your School Premises
-Time: 60 Minutes</textarea>
+<div id="topstu" class="page">
+<div class="card"><h3>Top Student 2026</h3><p style="font-size:13px">🥇 Ahmed Ali - 10th - 1st<br>🥈 Fatima Khan - 9th - 2nd<br>🥉 Usman Tariq - 12th - 3rd</p></div>
 </div>
 
-<div class="card">
-<h4>Top Student</h4>
-<input id="stu1" value="🥇 Ahmed Ali - 10th - 1st Position">
-<input id="stu2" value="🥈 Fatima Khan - 9th - 2nd Position">
-<input id="stu3" value="🥉 Usman Tariq - 12th - 3rd Position">
+<div id="topsch" class="page">
+<div class="card"><h3>Top School 2026</h3><p style="font-size:13px">🥇 Govt High School Lahore - 92%<br>🥈 Ideal Public School - 89%<br>🥉 City Grammar - 87%</p></div>
 </div>
 
-<div class="card">
-<h4>Top School</h4>
-<input id="sch1" value="🥇 Govt High School Lahore - 92%">
-<input id="sch2" value="🥈 Ideal Public School - 89%">
-<input id="sch3" value="🥉 City Grammar - 87%">
-</div>
-
-<div class="card">
-<h4>News</h4>
-<textarea id="newsText" rows="5">28 Sep 2026: Grand Competition Announced - Registration Open
-15 Sep 2026: New Syllabus Released
-01 Sep 2026: Website Launched</textarea>
-</div>
-
-<div class="card">
-<button onclick="generate()" style="width:100%;background:#facc15;color:#101f3c">Generate Updated Code</button>
-<textarea id="output" rows="10" style="margin-top:12px;display:none" placeholder="Yahan code ayega..."></textarea>
-<p id="copyMsg" style="font-size:12px;color:green;display:none;margin-top:6px">Code generate ho gaya! Copy karke index.html me paste kar dein.</p>
-</div>
+<div id="news" class="page">
+<div class="card"><h3>Latest News</h3><p style="font-size:13px">28 Sep: Grand Competition Announced<br>15 Sep: New Syllabus Released<br>01 Sep: Website Launched</p></div>
 </div>
 
 <script>
-function login(){
-if(document.getElementById('pass').value==='YGE2026'){
-document.getElementById('loginBox').classList.add('hidden');
-document.getElementById('adminBox').classList.remove('hidden');
-}else{
-document.getElementById('err').style.display='block';
-}
-}
-function generate(){
-let t=document.getElementById('testText').value;
-let s1=document.getElementById('stu1').value;
-let s2=document.getElementById('stu2').value;
-let s3=document.getElementById('stu3').value;
-let sc1=document.getElementById('sch1').value;
-let sc2=document.getElementById('sch2').value;
-let sc3=document.getElementById('sch3').value;
-let n=document.getElementById('newsText').value;
-let code=`Test Section:\n${t}\n\nTop Students:\n${s1}\n${s2}\n${s3}\n\nTop Schools:\n${sc1}\n${sc2}\n${sc3}\n\nNews:\n${n}\n\n--- Ab in values ko index.html me manually update kar dein ya mujhe bhej dein main update karke dunga ---`;
-document.getElementById('output').style.display='block';
-document.getElementById('output').value=code;
-document.getElementById('copyMsg').style.display='block';
+function show(id,bid){
+document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+document.getElementById(id).classList.add('active');
+document.querySelectorAll('nav button').forEach(b=>b.classList.remove('active'));
+document.getElementById(bid).classList.add('active');
+window.scrollTo({top:0,behavior:'smooth'});
 }
 </script>
-</body></html>
+
+</body>
+</html>
