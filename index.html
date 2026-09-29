@@ -3,58 +3,12 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Young Genius Education</title>
+<title>Young Genius Education - YGE</title>
 <style>
-*{margin:0;padding:0;box-sizing:border-box;font-family:system-ui,Arial}
-body{background:#f6f5ef}
-.poster{margin:10px;background:#fff;padding:6px;border-radius:15px;box-shadow:0 2px 8px rgba(0,0,0,.08)}
-.poster img{width:100%;border-radius:12px;display:block}
-header{background:#101f3c;color:#fff;padding:16px;position:sticky;top:0;z-index:10}
-.logo{display:flex;align-items:center;gap:10px;font-weight:800}
-nav{display:flex;gap:8px;margin-top:12px;overflow:auto;flex-wrap:wrap}
-nav button{border:0;padding:8px 14px;border-radius:999px;background:#ffffff22;color:#cbd5e1;font-weight:600}
-nav button.active{background:#facc15;color:#101f3c}
-.page{display:none;padding:16px}
-.page.active{display:block}
-.card{background:#fff;border-radius:14px;padding:16px;margin-bottom:14px;box-shadow:0 2px 8px rgba(0,0,0,.06)}
-</style>
-</head>
-<body>
-
-<!-- POSTER FIRST UP -->
-<div class="poster">
-<img src="https://qesradorkbhgmprpaqve.supabase.co/storage/v1/object/public/image/ChatGPT%20Image%20Sep%2028,%202026,%2006_51_47%20PM.png" alt="YGE Grand Competition">
-</div>
-
-<header>
-<div class="logo">YG - Young Genius Education | Think • Learn • Achieve</div>
-<nav>
-<button class="active" onclick="showPage('home',this)">Home</button>
-<button onclick="showPage('about',this)">About</button>
-<button onclick="showPage('competition',this)">Competition</button>
-<button onclick="showPage('contact',this)">Contact</button>
-</nav>
-</header>
-
-<div id="home" class="page active">
-<div class="card"><h2>Welcome to YGE</h2><p style="margin-top:8px;color:#555">Discover Knowledge. Build Your Future.</p></div>
-<div class="card"><b>For Classes 1-12</b><br>Mathematics, English, Science, Creative Writing</div>
-</div>
-
-<div id="about" class="page"><div class="card"><h2>About Us</h2><p>Quality Education For a Brighter Tomorrow. We build confidence through learning.</p></div></div>
-
-<div id="competition" class="page"><div class="card"><h2>Competition Details</h2><p>Grand Academic Competition for bright minds.<br><br><b>Prizes:</b><br>1st: US$200 + Gold Medal<br>2nd: US$100 + Silver<br>3rd: US$50 + Bronze<br>All: Certificate</p></div></div>
-
-<div id="contact" class="page"><div class="card"><h2>Contact</h2><p>Young Genius Education<br>Email: info@yge.com<br>Venue: On Your School Premises</p></div></div>
-
-<script>
-function showPage(id,btn){
-document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
-document.getElementById(id).classList.add('active');
-document.querySelectorAll('nav button').forEach(b=>b.classList.remove('active'));
-btn.classList.add('active');
-window.scrollTo({top:0,behavior:'smooth'});
-}
-</script>
-</body>
-</html>
+*{margin:0;padding:0;box-sizing:border-box;font-family: system-ui, Arial, sans-serif;}
+body{background:#f6f5ef;color:#1e293b;}
+header{background:#101f3c;color:white;padding:18px;position:sticky;top:0;z-index:100;}
+.logo{font-weight:800;font-size:20px;display:flex;align-items:center;gap:10px;}
+.logo span{background:#facc15;color:#101f3c;width:36px;height:36px;display:flex;align-items:center;justify-content:center;border-radius:10px;}
+nav{margin-top:14px;display:flex;gap:8px;overflow-x:auto;}
+nav button{border:none;padding:8
